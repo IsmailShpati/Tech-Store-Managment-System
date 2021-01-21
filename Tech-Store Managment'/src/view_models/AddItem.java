@@ -50,10 +50,11 @@ public class AddItem extends GridPane {
 				new Alert(AlertType.ERROR, "Please fill the name").showAndWait();
 			}
 			else {
-				BillItem b = StockControler.getItem(nameField.getText(), quantity.getQuantity());
+				BillItem b = StockControler.getItem(nameField.getText(), quantity.getQuantity(), 0);
 				if(b != null) {
 					System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
 					itemsView.addItem(b);
+					quantity.reset();
 					nameField.clear();
 					changeTotalPrice(b.getQuantity()*b.getSellingPrice());
 				}

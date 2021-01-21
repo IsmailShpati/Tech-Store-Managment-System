@@ -44,6 +44,7 @@ public class StockItem extends Item {
 	
 	public void sellStock(int stockSold) {
 		stockQuantity -= stockSold;
+		System.out.println("Stock for: " + getItemName() + " " + stockQuantity);
 	}
 	
 	public boolean equals(StockItem i) {

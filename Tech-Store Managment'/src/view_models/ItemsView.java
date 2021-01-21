@@ -84,7 +84,7 @@ public class ItemsView extends BorderPane {
 	public void editSelected(String name, int quantity) {
 	     //if name is changed find the item with corresponding name
 		if( selectedRow < items.size()) {
-		  BillItem b = StockControler.getItem(name, quantity);
+		  BillItem b = StockControler.getItem(name, quantity, items.get(selectedRow).getQuantity());
 			if(b != null) {
 				System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
 				items.set(selectedRow, b);
