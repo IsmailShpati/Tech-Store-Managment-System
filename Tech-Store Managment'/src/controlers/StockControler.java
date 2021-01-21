@@ -38,12 +38,12 @@ public class StockControler {
 		return null;
 				
 	}
-	
-	public static BillItem getItem(String name, int quantity) {
+	//editingEntry in case we are editing an item in CashierView and we alredy  
+	public static BillItem getItem(String name, int quantity, int editingEntry) {
 		for(StockItem i : itemsAvaible)
 			if(i.getItemName().equals(name)) {
 				if(i.getStockQuantity() >= quantity) {
-				    i.sellStock(quantity);
+					i.sellStock(quantity-editingEntry);
 					return new BillItem(name, i.getSellingPrice(), quantity);
 				}
 				else {//TODO throw Exeption, not enough stock, only x items left}
