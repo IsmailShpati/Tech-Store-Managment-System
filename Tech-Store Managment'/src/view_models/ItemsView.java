@@ -11,6 +11,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.BillItem;
@@ -40,6 +42,7 @@ public class ItemsView extends BorderPane {
 	
 	private void addTitle() {
 		Text title = new Text("Items");
+		title.setFont(Font.font("default", FontWeight.BOLD, 30));
 		setTop(title);
 		setMargin(title, new Insets(0, 0, 10, 0));
 		setAlignment(title, Pos.CENTER);
@@ -56,9 +59,8 @@ public class ItemsView extends BorderPane {
 			System.out.println("selected");
 			
 			 selectedRow = table.getSelectionModel().getSelectedIndex();
-			//if( i < items.size() && i > -1)
-			
-			setBottom(bottom);
+			if( selectedRow > -1)
+			   setBottom(bottom);
 		});
 		setCenter(table);
 	}
@@ -84,14 +86,14 @@ public class ItemsView extends BorderPane {
 	
 	public void editSelected(String name, int quantity) {
 	     //if name is changed find the item with corresponding name
-		if(selectedRow > -1 && selectedRow < items.size()) {
+		if( selectedRow < items.size()) {
 		  BillItem current = items.get(selectedRow);
 	      items.set(selectedRow, new BillItem(name, current.getSellingPrice(), quantity));	 
 		}
 	}
 	
 	private void setBottom() {		
-		Button deselect = new Button("Clear");
+		Button deselect = new Button("Cancel");
 		deselect.setOnAction(E -> {
 		      
 		      setBottom(null);
