@@ -1,6 +1,7 @@
 package view_models;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,7 +29,9 @@ public class EditItemPopUp extends Application {
 	@Override
 	public void start(Stage stage) {
 	    GridPane root = new GridPane();
-	    
+	    root.setPadding(new Insets(30));
+	    root.setHgap(20);
+	    root.setVgap(10);
 	    Label nameLabel = new Label("Item name");
 	    TextField nameField = new TextField(billName);
 	    root.add(nameLabel, 1, 1);

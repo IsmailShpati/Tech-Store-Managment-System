@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
+
+//Custom node ex: + 1 -, incrementing and decrementing [Part of the Right Side of CashierView]
 public class QuantityPlusMinus extends HBox{
 
 	private int minimumProducts, quantity;
@@ -36,6 +38,10 @@ public class QuantityPlusMinus extends HBox{
 	    
 	    getChildren().addAll(plusBtn, quantityText, minusBtn);
 	
+	}
+	
+	public void reset() {
+		quantityText.setText(minimumProducts+"");
 	}
 	
 

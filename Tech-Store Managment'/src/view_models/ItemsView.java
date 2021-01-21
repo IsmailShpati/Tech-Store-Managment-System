@@ -1,12 +1,15 @@
 package view_models;
 
+import controlers.StockControler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -17,11 +20,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.BillItem;
 
-//Cashier
+//Shows all items that cashier add [Left side of the cashier view]
 public class ItemsView extends BorderPane {
 
 	private ObservableList<BillItem> items = FXCollections.observableArrayList();
 	private TableView<BillItem> table;
+	private AddItem addItemView;
 	private HBox bottom = new HBox(30);
 	private int selectedRow = 0;
 	private GridPane itemsShow = new GridPane();
@@ -73,23 +77,23 @@ public class ItemsView extends BorderPane {
 	}
 	
 	public void addItem(String itemName, double price, int quantity) {
-		//Check first if item exists from StockControler, than check quantity if is enough
 		items.add(new BillItem(itemName, price, quantity));
 		
-	}
-	
-	public void addItem(String itemName, int quantity) {
-		double price = Math.random()*100;
-		totalPrice += price*quantity;
-		items.add(new BillItem(itemName, price, quantity));
 	}
 	
 	public void editSelected(String name, int quantity) {
 	     //if name is changed find the item with corresponding name
 		if( selectedRow < items.size()) {
-		  BillItem current = items.get(selectedRow);
-	      items.set(selectedRow, new BillItem(name, current.getSellingPrice(), quantity));	 
+		  BillItem b = StockControler.getItem(name, quantity);
+			if(b != null) {
+				System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
+				items.set(selectedRow, b);
+				addItemView.changeTotalPrice(b.getQuantity() * b.getSellingPrice());
+			}
+			else {
+				new Alert(AlertType.ERROR, "No item with that name exists").show();	 
 		}
+			}
 	}
 	
 	private void setBottom() {		
@@ -103,6 +107,7 @@ public class ItemsView extends BorderPane {
 		Button edit = new Button("Edit");
 		edit.setOnAction((event) -> {
 			BillItem i = items.get(selectedRow);
+			
 			new EditItemPopUp(i.getItemName(), i.getQuantity(), this).start(new Stage());
 			//(new EditItemPopUp()).start(new Stage());
 		});
@@ -120,5 +125,14 @@ public class ItemsView extends BorderPane {
 	
 	public boolean isEmpty() {
 		return items.size() == 0;
+	}
+
+	public void addItem(BillItem b) {
+		items.add(b);
+		
+	}
+	
+	public void setAddItemView(AddItem addItemView) {
+		this.addItemView = addItemView;
 	}
 }

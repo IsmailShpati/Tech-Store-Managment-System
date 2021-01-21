@@ -22,6 +22,7 @@ public class CashierView  implements Viewable{
 	
 	public CashierView() {
 		root.setLeft(leftSide);
+		leftSide.setAddItemView(rightSide);
 		root.setRight(rightSide);
 		initBottom();
 	}

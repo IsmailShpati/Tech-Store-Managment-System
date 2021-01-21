@@ -12,6 +12,8 @@ public class MainView extends Application{
 	public void start(Stage stage) throws Exception {
 		
 		new CashierView().setView(stage);
+		//new ManagerView().setView(stage);
+		//new AdministratorView().setView(stage);
 		stage.show();
 	}
 

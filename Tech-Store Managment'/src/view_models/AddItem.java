@@ -1,5 +1,6 @@
 package view_models;
 
+import controlers.StockControler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -7,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import models.BillItem;
 
+//Contains all needed nodes to perform the addition of a product [Right Side of the CashierView]
 public class AddItem extends GridPane {
 
 	private ItemsView itemsView;
@@ -47,16 +50,28 @@ public class AddItem extends GridPane {
 				new Alert(AlertType.ERROR, "Please fill the name").showAndWait();
 			}
 			else {
-				itemsView.addItem(nameField.getText(), quantity.getQuantity());
-				nameField.clear();
-				totalPrice.setText("Total price: " +
-				String.format("%.2f", itemsView.getTotalPrice()));
+				BillItem b = StockControler.getItem(nameField.getText(), quantity.getQuantity());
+				if(b != null) {
+					System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
+					itemsView.addItem(b);
+					nameField.clear();
+					changeTotalPrice(b.getQuantity()*b.getSellingPrice());
+				}
+				else {
+					new Alert(AlertType.ERROR, "No item with that name exists").show();
+				}
 			}
 		});
 		add(addItem, startingColumn+1, startingRow++);
 	}
 	
+	public void changeTotalPrice(double totalPrice) {
+		this.totalPrice.setText("Total price: " + String.format("%.2f", totalPrice));
+	}
+	
 	public void resetTotalPrice() {
+	   nameField.clear();
+	   quantity.reset();
 	   totalPrice.setText("Total price: 0.00");	
 	}
 	
