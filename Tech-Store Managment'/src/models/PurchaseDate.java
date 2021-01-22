@@ -41,8 +41,8 @@ public class PurchaseDate implements DateComparable {
 	}
 	
 	public String toString() {
-		return year%100 + "-" + month + "-" ;
-				//+ day + " " + hour + ":" + minute;
+		return year + "-" + pad(month) + "-" 
+				+ pad(day) + " " + pad(hour) + ":" + pad(minute);
 	}
 	
 	private String pad(int num) {

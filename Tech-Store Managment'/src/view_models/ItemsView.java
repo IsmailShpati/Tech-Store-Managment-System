@@ -131,7 +131,7 @@ public class ItemsView extends BorderPane {
 
 	public void addItem(BillItem b) {
 		items.add(b);
-		 bill.addBillItem(b);
+		bill.addBillItem(b);
 		
 	}
 	
