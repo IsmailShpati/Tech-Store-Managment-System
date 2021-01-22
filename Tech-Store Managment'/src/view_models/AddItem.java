@@ -1,8 +1,8 @@
 package view_models;
 
 import controlers.StockControler;
+import interfaces.ViewException;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,6 +17,7 @@ public class AddItem extends GridPane {
 	private QuantityPlusMinus quantity = new QuantityPlusMinus(1);
 	private TextField nameField = new TextField();
 	private Label totalPrice = new Label("Total price: 0.00");
+	private double totalP;
 	private int startingColumn, startingRow; //Initialized by 0
 	
 	public AddItem(ItemsView itemsView) {
@@ -47,31 +48,33 @@ public class AddItem extends GridPane {
 		Button addItem = new Button("ADD ITEM");
 		addItem.setOnAction(E -> {
 			if(nameField.getText().length() < 1) {
-				new Alert(AlertType.ERROR, "Please fill the name").showAndWait();
+				ViewException.showAlert( "Please fill the name", AlertType.ERROR);
 			}
 			else {
-				BillItem b = StockControler.getItem(nameField.getText(), quantity.getQuantity(), 0);
-				if(b != null) {
-					System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
+				try {
+				    BillItem b = StockControler.getItem(nameField.getText(), quantity.getQuantity(), 0);
+				    System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
 					itemsView.addItem(b);
 					quantity.reset();
 					nameField.clear();
 					changeTotalPrice(b.getQuantity()*b.getSellingPrice());
+				}catch(ViewException e) {
+					e.showAlert();
 				}
-				else {
-					new Alert(AlertType.ERROR, "No item with that name exists").show();
-				}
+				
 			}
 		});
 		add(addItem, startingColumn+1, startingRow++);
 	}
 	
 	public void changeTotalPrice(double totalPrice) {
-		this.totalPrice.setText("Total price: " + String.format("%.2f", totalPrice));
+		totalP += totalPrice;
+		this.totalPrice.setText("Total price: " + String.format("%.2f", totalP));
 	}
 	
 	public void resetTotalPrice() {
 	   nameField.clear();
+	   totalP = 0.0;
 	   quantity.reset();
 	   totalPrice.setText("Total price: 0.00");	
 	}

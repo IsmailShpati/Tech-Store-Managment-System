@@ -1,6 +1,9 @@
 package controlers;
 
 import java.util.ArrayList;
+
+import interfaces.ViewException;
+import javafx.scene.control.Alert.AlertType;
 import models.BillItem;
 import models.Categories;
 import models.StockItem;
@@ -14,32 +17,31 @@ public class StockControler {
 				Categories.categoriesAvaible.get(0), 120, 42));
 	}
 	
-	public static void buyItems(StockItem i, int quantityBought) {
+	public static void buyItems(StockItem i, int quantityBought) throws ViewException {
 		getItem(i).addStock(quantityBought);
 	}
 	
-	public static boolean addItem(StockItem i) {
+	public static void addItem(StockItem i) throws ViewException{
 		for(StockItem item : itemsAvaible)
 			if(item.equals(i))
-				return false;
-		itemsAvaible.add(i);
-		return true;
-				
+				throw new ViewException("An item with that name alredy exists.", AlertType.ERROR);
+		
+		itemsAvaible.add(i);		
 	}
 	
 	public static boolean addCategory(String category) {
 		return Categories.addCategory(category);
 	}
  
-	private static StockItem getItem(StockItem i) {
+	private static StockItem getItem(StockItem i) throws ViewException {
 		for(StockItem s : itemsAvaible)
 			if(s.equals(i))
 				return s;
-		return null;
+		throw new ViewException("No item with that name was found", AlertType.ERROR);
 				
 	}
 	//editingEntry in case we are editing an item in CashierView and we alredy  
-	public static BillItem getItem(String name, int quantity, int editingEntry) {
+	public static BillItem getItem(String name, int quantity, int editingEntry) throws ViewException {
 		for(StockItem i : itemsAvaible)
 			if(i.getItemName().equals(name)) {
 				if(i.getStockQuantity() >= quantity) {
@@ -47,9 +49,11 @@ public class StockControler {
 					return new BillItem(name, i.getSellingPrice(), quantity);
 				}
 				else {//TODO throw Exeption, not enough stock, only x items left}
+					throw new ViewException("Not enough stock left for that item, only " 
+				+ i.getStockQuantity() +" items left in stock", 
+							AlertType.ERROR);
 				}
-	
 			}
-		return null;
+		throw new ViewException("No item with that name exists.", AlertType.ERROR);
 	}
 }

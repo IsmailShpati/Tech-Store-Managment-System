@@ -1,11 +1,11 @@
 package view_models;
 
 import controlers.StockControler;
+import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import models.Bill;
 import models.BillItem;
 
 //Shows all items that cashier add [Left side of the cashier view]
@@ -30,7 +31,7 @@ public class ItemsView extends BorderPane {
 	private int selectedRow = 0;
 	private GridPane itemsShow = new GridPane();
 	private double totalPrice; 
-	
+	private Bill bill = new Bill();
 	
 	public ItemsView() {
 	//	setPrefWidth(300);
@@ -41,7 +42,6 @@ public class ItemsView extends BorderPane {
 		addTitle();
 		addItems();
 		setBottom();
-		
 	}
 	
 	private void addTitle() {
@@ -77,24 +77,25 @@ public class ItemsView extends BorderPane {
 	}
 	
 	public void addItem(String itemName, double price, int quantity) {
-		items.add(new BillItem(itemName, price, quantity));
-		
+		BillItem b = new BillItem(itemName, price, quantity);
+		items.add(b);
+	    bill.addBillItem(b);
 	}
 	
-	public void editSelected(String name, int quantity) {
+	public void editSelected(String name, int quantity) throws ViewException{
 	     //if name is changed find the item with corresponding name
 		if( selectedRow < items.size()) {
-		  BillItem b = StockControler.getItem(name, quantity, items.get(selectedRow).getQuantity());
-			if(b != null) {
-				System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
-				items.set(selectedRow, b);
-				addItemView.changeTotalPrice(b.getQuantity() * b.getSellingPrice());
-			}
-			else {
-				new Alert(AlertType.ERROR, "No item with that name exists").show();	 
+			BillItem b = StockControler.getItem(name, quantity, items.get(selectedRow).getQuantity());
+			System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
+			items.set(selectedRow, b);
+			bill.editItem(selectedRow, b);
+			addItemView.changeTotalPrice(b.getQuantity() * b.getSellingPrice());
 		}
-			}
+			else {
+				throw new ViewException( "No item with that name exists", AlertType.ERROR);
+		}
 	}
+	
 	
 	private void setBottom() {		
 		Button deselect = new Button("Cancel");
@@ -109,7 +110,7 @@ public class ItemsView extends BorderPane {
 			BillItem i = items.get(selectedRow);
 			
 			new EditItemPopUp(i.getItemName(), i.getQuantity(), this).start(new Stage());
-			//(new EditItemPopUp()).start(new Stage());
+		
 		});
 		bottom.getChildren().addAll(deselect, edit);
 		//setBottom(bottom);
@@ -120,6 +121,7 @@ public class ItemsView extends BorderPane {
 	}
 	
 	public void clearItems() {
+		bill = new Bill();
 		items.clear();
 	}
 	
@@ -129,7 +131,12 @@ public class ItemsView extends BorderPane {
 
 	public void addItem(BillItem b) {
 		items.add(b);
+		 bill.addBillItem(b);
 		
+	}
+	
+	public Bill getBill() {
+		return bill;
 	}
 	
 	public void setAddItemView(AddItem addItemView) {

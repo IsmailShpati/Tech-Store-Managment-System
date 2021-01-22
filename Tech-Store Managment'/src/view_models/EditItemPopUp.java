@@ -1,11 +1,13 @@
 package view_models;
 
+import interfaces.ViewException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -43,8 +45,17 @@ public class EditItemPopUp extends Application {
 	    root.add(quantityField, 2, 2);
 	    Button save = new Button("Save");
 	    root.add(save, 2, 3);
+	    
 	    save.setOnAction(e -> {
-	    	itemView.editSelected(nameField.getText(), Integer.parseInt(quantityField.getText()));
+	    	try {
+				itemView.editSelected(nameField.getText(), Integer.parseInt(quantityField.getText()));
+			} catch (NumberFormatException e1) {
+				ViewException.showAlert("Please enter a number", AlertType.ERROR);
+			}
+	    	catch(ViewException e1) {
+	    		e1.showAlert();
+	    	}
+	    	
 	    	stage.close();
 	    });
 	    stage.setScene(new Scene(root));

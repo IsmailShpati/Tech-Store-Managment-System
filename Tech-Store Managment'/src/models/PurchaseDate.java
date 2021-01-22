@@ -1,15 +1,21 @@
 package models;
 
+import java.time.LocalDateTime;
+
 public class PurchaseDate implements DateComparable {
 
-	int day, month, year;
+	private int day, month, year;
+	private int hour, minute;
 
-	public PurchaseDate(int day, int month, int year) {
-		this.day = day;
-		this.month = month;
-		this.year = year;
+
+	public PurchaseDate() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		this.day = currentTime.getDayOfMonth();
+		this.month = currentTime.getMonthValue();
+		this.year = currentTime.getYear();
+		this.hour = currentTime.getHour();
+		this.minute = currentTime.getMinute();
 	}
-
 	public int getDay() {
 		return day;
 	}
@@ -35,9 +41,14 @@ public class PurchaseDate implements DateComparable {
 	}
 	
 	public String toString() {
-		String date = "";
-		date += date + "/" + month + "/" + year;
-		return date;
+		return year%100 + "-" + month + "-" ;
+				//+ day + " " + hour + ":" + minute;
+	}
+	
+	private String pad(int num) {
+		if(num < 10)
+			return "0"+num;
+		return num+"";
 	}
 
 	

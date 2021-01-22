@@ -42,6 +42,7 @@ public class QuantityPlusMinus extends HBox{
 	
 	public void reset() {
 		quantityText.setText(minimumProducts+"");
+		quantity = minimumProducts;
 	}
 	
 

@@ -1,5 +1,6 @@
 package views;
 
+import controlers.BillGenerator;
 import interfaces.Viewable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +20,6 @@ public class CashierView  implements Viewable{
 	private ItemsView leftSide = new ItemsView();
 	private AddItem rightSide = new AddItem(leftSide);
 	
-	
 	public CashierView() {
 		root.setLeft(leftSide);
 		leftSide.setAddItemView(rightSide);
@@ -32,10 +32,13 @@ public class CashierView  implements Viewable{
 	
 		Button printBtn = new Button("Print Bill");
 		printBtn.setOnAction(e -> {
-		if(!leftSide.isEmpty()) {
-		    leftSide.clearItems();
-		    rightSide.resetTotalPrice();
-		    new Alert(AlertType.CONFIRMATION, "Bill printed", ButtonType.OK).showAndWait();
+			if(!leftSide.isEmpty()) {
+				BillGenerator.printBill(leftSide.getBill());
+				leftSide.clearItems();
+				rightSide.resetTotalPrice();
+				
+				new Alert(AlertType.CONFIRMATION, "Bill printed", ButtonType.OK).showAndWait();
+			
 			}
 		});
 		BorderPane.setMargin(printBtn, new Insets(20));

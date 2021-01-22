@@ -2,12 +2,17 @@ package models;
 
 public class BillItem extends Item{
 
-	private int quantity;
+	private static int BillNo;
+	private int quantity, id;
 	private PurchaseDate date;
+	//private Cashier cashier;
+	
 	
 	public BillItem(String itemName, String itemModel, 
 			double sellingPrice, int quantity, PurchaseDate date) {
 		super(itemName, itemModel, sellingPrice);
+		BillNo++;
+		id = BillNo;
 		this.quantity = quantity;
 		this.date = date;
 	}
@@ -28,6 +33,10 @@ public class BillItem extends Item{
 	public PurchaseDate getDate() { return date; }
 	public void setDate(PurchaseDate date) { this.date = date; }
 	
-	
+	public double getTotalBillPrice() {
+		return quantity * getSellingPrice();
+	}
 
+	
+	public int getBillNO() { return id; }
 }
