@@ -1,0 +1,30 @@
+
+#menuPannel{
+	-fx-border-width: 2px;
+	-fx-background-color: blue;
+	-fx-min-width: 300px;
+}
+
+#sideMenuBtn, #selectedMenuBtn, #logOutBtn{
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+	-fx-background-radius: 10;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-pref-width: 300;
+	-fx-font-size: 20px;
+	-fx-border-radius: 10;
+}
+
+#selectedMenuBtn{
+	-fx-background-color: #000033;
+}
+#sideMenuBtn:hover{
+	-fx-border-color: white;
+}
+
+#logOutBtn:hover{
+	-fx-background-color: red;
+}
+
+
