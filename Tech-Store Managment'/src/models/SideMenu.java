@@ -18,7 +18,6 @@ public class SideMenu extends HBox {
 	public SideMenu() {
 		getStylesheets().add("SideMenu.css");
 		setSpacing(40);
-		//this.rightSide = rightSide;
 		getChildren().addAll(sideMenu, this.rightSide);
 	}
 	
@@ -38,27 +37,28 @@ public class SideMenu extends HBox {
 		private int nrButtons = 0;
 		private Button selectedBtn = new Button();
 		public SidePannel() {
-			setPrefWidth(300);
 			setSpacing(40);
 			setId("menuPannel");
 			setPadding(new Insets(50, 0, 50, 0));
 			setAlignment(Pos.TOP_CENTER);
-			//getStylesheets().addAll("menuPannel", "sideMenuBtn");
 			Button logOut = new Button("Log out");
-			logOut.setId("sideMenuBtn");
+			logOut.setId("logOutBtn");
 			getChildren().add(logOut);
 			logOut.setOnAction(e->{
 				System.out.println("LogginOut");
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Wanna log out?", ButtonType.YES, ButtonType.NO);
-			alert.show();
-		
-		
+				Alert alert = new Alert(AlertType.CONFIRMATION, "Wanna log out?", ButtonType.YES, ButtonType.NO);
+				alert.show();
 			});
 		}
 		
 		public void addButton(Pane pane, String btnText) {
 			Button btn = new Button(btnText);
 			btn.setId("sideMenuBtn");
+			if(nrButtons == 0) {
+				selectedBtn = btn;
+				btn.setId("selectedMenuBtn");
+				changeRightSide(pane);
+			}
 			getChildren().add(nrButtons++, btn);
 			btn.setOnAction(e -> {
 			 if(selectedBtn != btn) {
@@ -68,6 +68,7 @@ public class SideMenu extends HBox {
 				changeRightSide(pane);
 			 }
 			});
+			
 		}
 		
 	}
