@@ -11,10 +11,14 @@ import models.StockItem;
 public class StockControler {
 	private static ArrayList<StockItem> itemsAvaible = new ArrayList<>();
 	
+	public static void main(String[] args) {
+		System.out.println(StockControler.getLowStockItems());
+	}
+	
 	static {
 		//TODO construct object here
-		itemsAvaible.add(new StockItem("Hell", "IDK", 45.5, 
-				Categories.categoriesAvaible.get(0), 120, 42));
+		itemsAvaible.add(new StockItem("Hello", "IDK", 45.5, 
+				Categories.categoriesAvaible.get(0), 4, 42));
 	}
 	
 	public static void buyItems(StockItem i, int quantityBought) throws ViewException {
@@ -27,6 +31,14 @@ public class StockControler {
 				throw new ViewException("An item with that name alredy exists.", AlertType.ERROR);
 		
 		itemsAvaible.add(i);		
+	}
+	
+	public static String getLowStockItems() {
+		StringBuilder lowStock = new StringBuilder();
+		for(StockItem i : itemsAvaible)
+			if(i.getStockQuantity() < 5)
+				lowStock.append(i.getItemName() + " " + i.getStockQuantity() + "\n");
+		return lowStock.toString();
 	}
 	
 	public static boolean addCategory(String category) {

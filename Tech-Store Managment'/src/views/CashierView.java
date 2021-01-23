@@ -20,7 +20,6 @@ import view_models.ItemsView;
 
 public class CashierView  implements Viewable{
 	
-
 	private BorderPane root = new BorderPane();
 	private ItemsView leftSide = new ItemsView();
 	private AddItem rightSide = new AddItem(leftSide);
@@ -47,33 +46,29 @@ public class CashierView  implements Viewable{
 		menu.addButton(pn, "Prov");
 	}
 	
-	
 	private void initBottom() {
-	
-		Button printBtn = new Button("Print Bill");
+		Button printBtn = new Button("Print Bill");		
 		printBtn.setOnAction(e -> {
 			if(!leftSide.isEmpty()) {
 				BillGenerator.printBill(leftSide.getBill());
 				leftSide.clearItems();
 				rightSide.resetTotalPrice();
 				
-				new Alert(AlertType.CONFIRMATION, "Bill printed", ButtonType.OK).showAndWait();
-			
+				new Alert(AlertType.CONFIRMATION, 
+						"Bill printed", ButtonType.OK).showAndWait();	
 			}
 		});
+		
 		BorderPane.setMargin(printBtn, new Insets(20));
 		BorderPane.setAlignment(printBtn, Pos.CENTER_RIGHT);
 		root.setBottom(printBtn);
 	}
 	
-	
 	@Override
 	public void setView(Stage stage) {
-
 		stage.sizeToScene();
 		stage.setTitle("Cashier view");
 		stage.setScene(new Scene(menu));
-		
 	}
 }
 
