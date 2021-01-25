@@ -1,6 +1,6 @@
 package view_models;
 
-import controlers.StockControler;
+import controlers.StockController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -85,7 +85,7 @@ public class ItemsView extends BorderPane {
 	public void editSelected(String name, int quantity) throws ViewException{
 	     //if name is changed find the item with corresponding name
 		if( selectedRow < items.size()) {
-			BillItem b = StockControler.getItem(name, quantity, items.get(selectedRow).getQuantity());
+			BillItem b = StockController.getItem(name, quantity, items.get(selectedRow).getQuantity());
 			System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
 			items.set(selectedRow, b);
 			bill.editItem(selectedRow, b);

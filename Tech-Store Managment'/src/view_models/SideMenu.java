@@ -1,4 +1,4 @@
-package models;
+package view_models;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

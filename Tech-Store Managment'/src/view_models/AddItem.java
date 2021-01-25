@@ -1,6 +1,6 @@
 package view_models;
 
-import controlers.StockControler;
+import controlers.StockController;
 import interfaces.ViewException;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -52,7 +52,7 @@ public class AddItem extends GridPane {
 			}
 			else {
 				try {
-				    BillItem b = StockControler.getItem(nameField.getText(), quantity.getQuantity(), 0);
+				    BillItem b = StockController.getItem(nameField.getText(), quantity.getQuantity(), 0);
 				    System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
 					itemsView.addItem(b);
 					quantity.reset();

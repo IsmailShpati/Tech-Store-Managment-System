@@ -14,9 +14,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import models.SideMenu;
 import view_models.AddItem;
 import view_models.ItemsView;
+import view_models.SideMenu;
 
 public class CashierView  implements Viewable{
 	
