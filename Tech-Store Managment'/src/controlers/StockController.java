@@ -8,11 +8,11 @@ import models.BillItem;
 import models.Categories;
 import models.StockItem;
 
-public class StockControler {
+public class StockController {
 	private static ArrayList<StockItem> itemsAvaible = new ArrayList<>();
 	
 	public static void main(String[] args) {
-		System.out.println(StockControler.getLowStockItems());
+		System.out.println(StockController.getLowStockItems());
 	}
 	
 	static {
