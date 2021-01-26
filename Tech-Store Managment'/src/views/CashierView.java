@@ -14,6 +14,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import models.Bill;
+import models.Cashier;
 import view_models.AddItem;
 import view_models.ItemsView;
 import view_models.SideMenu;
@@ -24,8 +26,11 @@ public class CashierView  implements Viewable{
 	private ItemsView leftSide = new ItemsView();
 	private AddItem rightSide = new AddItem(leftSide);
     private SideMenu menu = new SideMenu();
-	
-	public CashierView() {
+    private Cashier cashier;
+    
+    				//Cashier c this.cashier = c;
+	public CashierView(Cashier cashier) {
+		this.cashier = cashier;
 		root.setLeft(leftSide);
 		leftSide.setAddItemView(rightSide);
 		root.setRight(rightSide);
@@ -50,7 +55,9 @@ public class CashierView  implements Viewable{
 		Button printBtn = new Button("Print Bill");		
 		printBtn.setOnAction(e -> {
 			if(!leftSide.isEmpty()) {
-				BillGenerator.printBill(leftSide.getBill());
+				Bill b = leftSide.getBill();
+				cashier.addBill(b);
+				BillGenerator.printBill(b);
 				leftSide.clearItems();
 				rightSide.resetTotalPrice();
 				

@@ -2,6 +2,9 @@ package models;
 
 import java.util.ArrayList;
 
+import interfaces.ViewException;
+import javafx.scene.control.Alert.AlertType;
+
 public class Categories {
 	public static ArrayList<String> categoriesAvaible = new ArrayList<>();
 	
@@ -12,13 +15,13 @@ public class Categories {
 	
 	
 	
-	public static boolean addCategory(String category) {
+	public static void addCategory(String category) throws ViewException {
 		
 		for(String s : categoriesAvaible)
 			if(s.equals(category))
-				return false;
+				throw new ViewException("Category alredy exists.", AlertType.WARNING);
 		categoriesAvaible.add(category);
-		return true;
+		
 	}
 	
 	

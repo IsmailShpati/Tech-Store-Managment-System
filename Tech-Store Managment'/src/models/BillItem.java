@@ -2,19 +2,19 @@ package models;
 
 public class BillItem extends Item{
 
+	private static final long serialVersionUID = 3898208526204791983L;
+	
+	
 	private static int BillNo;
 	private int quantity, id;
-	private PurchaseDate date;
-	//private Cashier cashier;
 	
 	
 	public BillItem(String itemName, String itemModel, 
-			double sellingPrice, int quantity, PurchaseDate date) {
+			double sellingPrice, int quantity) {
 		super(itemName, itemModel, sellingPrice);
 		BillNo++;
 		id = BillNo;
 		this.quantity = quantity;
-		this.date = date;
 	}
 	
 	public BillItem(String itemName, double sellingPrice, int quantity) {
@@ -30,8 +30,6 @@ public class BillItem extends Item{
 		this.quantity = quantity;
 	}
 	
-	public PurchaseDate getDate() { return date; }
-	public void setDate(PurchaseDate date) { this.date = date; }
 	
 	public double getTotalBillPrice() {
 		return quantity * getSellingPrice();

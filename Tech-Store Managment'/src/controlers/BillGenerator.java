@@ -11,19 +11,19 @@ import models.BillItem;
 public class BillGenerator {
 
 	private static final int BILL_WIDTH = 36; //36 CHARS
-	private static final String folderPath = "src/bills/";
-	private static final File readNOBills = new File("src/databases/BillGeneratorDB.txt");
+	private static final String folderPath = "bills/";
+	private static final File readNOBills = new File("databases/Bill Generator/BillGeneratorDB.txt");
 	private static PrintWriter writer;
 	private static int billNO = 1;
 	private BillGenerator() {}
 	
 
-	public static void main(String[] args) throws FileNotFoundException {
-		PrintWriter write = new PrintWriter(readNOBills);
-		write.flush();
-		write.print(billNO);
-		write.close();
-	}
+//	public static void main(String[] args) throws FileNotFoundException {
+//		PrintWriter write = new PrintWriter(readNOBills);
+//		write.flush();
+//		write.print(billNO);
+//		write.close();
+//	}
 	
 	static {
 		Scanner fin;

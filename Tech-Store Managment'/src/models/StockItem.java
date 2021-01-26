@@ -2,6 +2,8 @@ package models;
 
 public class StockItem extends Item {
 
+	private static final long serialVersionUID = 7693147414316147698L;
+
 	private String category;
 	private int stockQuantity;
 	private double purchasingPrice;

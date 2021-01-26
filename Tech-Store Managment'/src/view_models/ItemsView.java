@@ -62,7 +62,7 @@ public class ItemsView extends BorderPane {
 		table.setOnMouseClicked(e -> {	
 			System.out.println("selected");
 			
-			 selectedRow = table.getSelectionModel().getSelectedIndex();
+			selectedRow = table.getSelectionModel().getSelectedIndex();
 			if( selectedRow > -1)
 			   setBottom(bottom);
 		});
@@ -110,7 +110,6 @@ public class ItemsView extends BorderPane {
 			BillItem i = items.get(selectedRow);
 			
 			new EditItemPopUp(i.getItemName(), i.getQuantity(), this).start(new Stage());
-		
 		});
 		bottom.getChildren().addAll(deselect, edit);
 		//setBottom(bottom);

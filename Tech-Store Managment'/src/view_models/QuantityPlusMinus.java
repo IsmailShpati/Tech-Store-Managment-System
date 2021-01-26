@@ -25,8 +25,8 @@ public class QuantityPlusMinus extends HBox{
 		Button plusBtn = new Button("+");
 		plusBtn.setOnAction(e -> {
 			quantity++;
+			System.out.println(quantity);
 			quantityText.setText(quantity+"");
-			
 		});
 		
 		Button minusBtn = new Button("-");

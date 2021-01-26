@@ -17,12 +17,17 @@ public class StockController {
 	
 	static {
 		//TODO construct object here
-		itemsAvaible.add(new StockItem("Hello", "IDK", 45.5, 
+		itemsAvaible.add(new StockItem("Shoe", "IDK", 45.5, 
 				Categories.categoriesAvaible.get(0), 4, 42));
 	}
 	
-	public static void buyItems(StockItem i, int quantityBought) throws ViewException {
-		getItem(i).addStock(quantityBought);
+	public static ArrayList<StockItem> getItems(){
+		return itemsAvaible;
+	}
+
+	public static void purchaseStock(int index, int quantity) {
+		itemsAvaible.get(index).addStock(quantity);
+		//Store a bill for the purchase
 	}
 	
 	public static void addItem(StockItem i) throws ViewException{
@@ -41,23 +46,35 @@ public class StockController {
 		return lowStock.toString();
 	}
 	
-	public static boolean addCategory(String category) {
-		return Categories.addCategory(category);
+	public static void addCategory(String category) {
+		try {
+			Categories.addCategory(category);
+		} catch (ViewException e) {
+			e.showAlert();
+		}
 	}
  
-	private static StockItem getItem(StockItem i) throws ViewException {
-		for(StockItem s : itemsAvaible)
-			if(s.equals(i))
-				return s;
-		throw new ViewException("No item with that name was found", AlertType.ERROR);
-				
-	}
-	//editingEntry in case we are editing an item in CashierView and we alredy  
-	public static BillItem getItem(String name, int quantity, int editingEntry) throws ViewException {
+//	private static StockItem getItem(StockItem i) throws ViewException {
+//		for(StockItem s : itemsAvaible)
+//			if(s.equals(i)) {
+//			   if(s.getStockQuantity() >= i.getStockQuantity())
+//				   return s;
+//			   else {
+//				   throw new ViewException("Not enough stock left for that item, only " 
+//							+ i.getStockQuantity() +" items left in stock", 
+//										AlertType.ERROR);
+//			   }
+//			}
+//		throw new ViewException("No item with that name was found", AlertType.ERROR);
+//				
+//	}
+	
+	//editingEntry in case we are editing an item in CashierView 
+	public static BillItem getItem(String name, int quantity, int oldQuantity) throws ViewException {
 		for(StockItem i : itemsAvaible)
 			if(i.getItemName().equals(name)) {
 				if(i.getStockQuantity() >= quantity) {
-					i.sellStock(quantity-editingEntry);
+					i.sellStock(quantity - oldQuantity);
 					return new BillItem(name, i.getSellingPrice(), quantity);
 				}
 				else {//TODO throw Exeption, not enough stock, only x items left}

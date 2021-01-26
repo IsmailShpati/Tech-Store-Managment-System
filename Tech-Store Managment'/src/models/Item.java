@@ -1,7 +1,11 @@
 package models;
 
-public abstract class Item {
+import java.io.Serializable;
 
+public abstract class Item implements Serializable {
+
+	private static final long serialVersionUID = -1343625581795496272L;
+	
 	private String itemName, itemModel;
 	private double sellingPrice;
 	
