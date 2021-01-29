@@ -2,7 +2,7 @@ package view_models;
 
 import java.time.LocalDate;
 
-import controlers.UserController;
+import controllers.UserController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -20,17 +20,9 @@ import models.Administrator;
 import models.Cashier;
 import models.Manager;
 import models.PermissionLevel;
-import models.User;
 
 public class AddUserView extends GridPane {
-	//username
-	//password
-	//name
-	//surname
-	//salary
-	//permission
-	//Birthday
-	
+
 	private int startingRow, startingColumn;
 	private PasswordField passwordField = new PasswordField();
 	private ComboBox<String> permissionLevel = new ComboBox<>();

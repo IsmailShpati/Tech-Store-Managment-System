@@ -1,6 +1,6 @@
 package view_models;
 
-import controlers.CategorieController;
+import controllers.CategorieController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import models.Category;
 import views.ManagerView;

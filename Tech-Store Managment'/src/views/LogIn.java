@@ -1,6 +1,6 @@
 package views;
 
-import controlers.UserController;
+import controllers.UserController;
 import interfaces.ViewException;
 import interfaces.Viewable;
 import javafx.geometry.Insets;

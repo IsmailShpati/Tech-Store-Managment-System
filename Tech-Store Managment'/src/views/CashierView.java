@@ -1,6 +1,6 @@
 package views;
 
-import controlers.BillGenerator;
+import controllers.BillGenerator;
 import interfaces.Viewable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

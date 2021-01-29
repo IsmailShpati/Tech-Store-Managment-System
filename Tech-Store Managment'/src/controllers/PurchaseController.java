@@ -1,4 +1,4 @@
-package controlers;
+package controllers;
 
 public class PurchaseController {
 

@@ -21,7 +21,7 @@ public class Manager extends User {
 			  PermissionLevel permissionLevel, double salary, LocalDate birthday ) {
 			super(username, password, name, surname, permissionLevel, salary, birthday);
 			
-		//initFile();
+		initFile();
 	}
 
 	@SuppressWarnings("unchecked")

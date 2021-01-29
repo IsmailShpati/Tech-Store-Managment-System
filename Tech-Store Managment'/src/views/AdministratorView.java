@@ -3,7 +3,6 @@ package views;
 import interfaces.Viewable;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import view_models.AddUserView;
 import view_models.SideMenu;

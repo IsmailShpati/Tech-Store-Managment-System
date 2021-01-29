@@ -3,9 +3,6 @@ package models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import interfaces.ViewException;
-import javafx.scene.control.Alert.AlertType;
-
 public abstract class User implements Serializable {
 
 	private static final long serialVersionUID = 3013305226201820630L;

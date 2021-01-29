@@ -1,6 +1,6 @@
 package view_models;
 
-import controlers.StockController;
+import controllers.StockController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

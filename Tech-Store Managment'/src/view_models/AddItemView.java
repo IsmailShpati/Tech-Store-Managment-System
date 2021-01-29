@@ -1,7 +1,7 @@
 package view_models;
 
-import controlers.CategorieController;
-import controlers.StockController;
+import controllers.CategorieController;
+import controllers.StockController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
