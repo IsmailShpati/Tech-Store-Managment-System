@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import models.Category;
 import models.StockItem;
 import views.ManagerView;
 
@@ -40,11 +39,12 @@ public class AddItemView extends BorderPane{
 		new TextField()
 	};
 	
-	private ComboBox<Category> categorySelector = new ComboBox<>(); 
+	private ComboBox<String> categorySelector = new ComboBox<>(); 
 	
 	
 	public AddItemView(ManagerView mainView) {
 		this.mainView = mainView;
+		setPrefWidth(600);
 		initPane();
 		putNodes();
 		initAddBtn();
@@ -114,7 +114,7 @@ public class AddItemView extends BorderPane{
 			throw new ViewException("Please add a category", AlertType.ERROR);
 		}
 		
-		StockItem i = new StockItem(name, model, sellingPrice, categorySelector.getValue().getCategory(),
+		StockItem i = new StockItem(name, model, sellingPrice, categorySelector.getValue(),
 				0, purchasingPrice);
 		
 		StockController.addItem(i);

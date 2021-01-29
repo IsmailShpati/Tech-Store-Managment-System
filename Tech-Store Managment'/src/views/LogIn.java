@@ -14,7 +14,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import models.Administrator;
 import models.Cashier;
+import models.Manager;
 import models.PermissionLevel;
 import models.User;
 
@@ -75,10 +77,10 @@ public class LogIn implements Viewable {
 				new CashierView((Cashier)u).setView(stage);
 				break;
 			case MANAGER:
-				new ManagerView().setView(stage);
+				new ManagerView((Manager)u).setView(stage);
 				break;
 			case ADMINISTRATOR:
-				new AdministratorView().setView(stage);;
+				new AdministratorView((Administrator)u).setView(stage);;
 				break;
 			}
 		}

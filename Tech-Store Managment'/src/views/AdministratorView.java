@@ -4,12 +4,16 @@ import interfaces.Viewable;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import models.Administrator;
 import view_models.AddUserView;
 import view_models.SideMenu;
 
 public class AdministratorView implements Viewable{
 
-	
+	private Administrator user;
+	public AdministratorView(Administrator user) {
+		this.user = user;
+	}
 
 	@Override
 	public void setView(Stage stage) {
@@ -29,7 +33,7 @@ public class AdministratorView implements Viewable{
 		}
 		
 		private void initMenu() {
-			menu = new SideMenu(stage);
+			menu = new SideMenu(stage, user);
 			menu.addButton(this, "Add user");
 		}
 		

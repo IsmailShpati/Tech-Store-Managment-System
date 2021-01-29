@@ -40,7 +40,7 @@ public class CashierView  implements Viewable{
 	    
 	    				
 		public CashierPannel( Stage stage) {
-			menu = new SideMenu(stage);
+			menu = new SideMenu(stage, cashier);
 			setLeft(leftSide);
 			leftSide.setAddItemView(rightSide);
 			setRight(rightSide);

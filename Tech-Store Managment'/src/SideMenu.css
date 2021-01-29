@@ -35,11 +35,19 @@
 }
 
 .menu .label{
-	-fx-pref-width:100px;
 	-fx-text-fill: white;
+	-fx-font-size: 16;
+	-fx-pref-width: 200px;
 }
 
 .menu-item .label{
 	-fx-text-fill: black;
+}
+
+.list-cell{
+    -fx-font-size:16;
+}
+.table-cell{
+	-fx-font-size: 16;
 }
 

@@ -10,21 +10,20 @@ import java.util.ArrayList;
 
 import interfaces.ViewException;
 import javafx.scene.control.Alert.AlertType;
-import models.Category;
 
 @SuppressWarnings("unchecked")
 public class CategorieController {
 	
 	
 	
-	private static ArrayList<Category> categoriesObservable = new ArrayList<>();
+	private static ArrayList<String> categories = new ArrayList<>();
 	private static final File path = new File("databases/Stock Database/categories.dat");
 	static {
 		//TODO read from file and initialize categories
 	
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(path));
-			categoriesObservable = (ArrayList<Category>)in.readObject();
+			categories = (ArrayList<String>)in.readObject();
 			in.close();
 		}  catch (Exception e) {
 			System.err.println("[CategorieController]Reading problem");
@@ -32,35 +31,45 @@ public class CategorieController {
 		
 	}
 	
-	public static ArrayList<Category> getCategories(){
-		return categoriesObservable;
+	public static ArrayList<String> getCategories(){
+		return categories;
 	}
 	
 	
 	public static void addCategory(String category) throws ViewException {
-		for(Category s : categoriesObservable)
-			if(s.getCategory().equals(category))
-				throw new ViewException("Category " + s + " alredy exists.", AlertType.WARNING);
-		categoriesObservable.add(new Category(category));
+		exists(category);
+		categories.add(category);
 		save();
 	}
 	
-	public static Category reset() {
-		if(categoriesObservable.size() > 0)
-			return categoriesObservable.get(0);
-		return null;
+	public static void deleteCategory(String category) {
+		categories.remove(category);
 	}
 	
+	public static void editCategory(int index, String newCategory) throws ViewException{
+		exists(newCategory);
+		categories.set(index, newCategory);
+	}
+	
+	private static void exists(String category) throws ViewException{
+		for(String s : categories)
+			if(s.equals(category))
+				throw new ViewException("Category " + s + " alredy exists.", AlertType.WARNING);
+	}
+	
+	public static String reset() {
+		if(categories.size() > 0)
+			return categories.get(0);
+		return null;
+	}
 	
 	private static void save() {
 		try {
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path));
-			out.writeObject(categoriesObservable);
+			out.writeObject(categories);
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
 }

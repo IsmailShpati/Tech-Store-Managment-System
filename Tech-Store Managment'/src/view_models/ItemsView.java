@@ -58,7 +58,7 @@ public class ItemsView extends BorderPane {
 		addColumn(table, "sellingPrice", "Price");
 		addColumn(table, "quantity", "Quant.");
 		table.setItems(items);
-	
+		table.setPrefWidth(400);
 		table.setOnMouseClicked(e -> {	
 			System.out.println("selected");
 			

@@ -1,10 +1,7 @@
 package views;
 
-
-
-import java.util.Optional;
-
 import interfaces.Viewable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,16 +12,27 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import models.Manager;
 import view_models.AddItemView;
 import view_models.AddNewCategory;
+import view_models.PurchasePopUp;
 import view_models.PurchaseStock;
 import view_models.SideMenu;
 import view_models.Statistics;
+import view_models.SuppliersView;
 
 public class ManagerView implements Viewable {
 	
 	private ManagerPannel pannel;
+	private Manager manager;
+	
+	public ManagerView(Manager manager) {
+		this.manager = manager;
+	}
+	
 	@Override
 	public void setView(Stage stage) {
 		pannel = new ManagerPannel(stage);
@@ -46,19 +54,19 @@ public class ManagerView implements Viewable {
 		
 		public ManagerPannel(Stage stage) {
 			this.stage = stage;
-			menu = new SideMenu(stage);
+			menu = new SideMenu(stage, manager);
 			menu.addButton(this, "Stock Managment");
+			menu.addButton(new SuppliersView(), "Suppliers");
 			menu.addButton(new Statistics(), "Statistics");
 			initMenus();
-
-			setCenter(stockView);
+			VBox container = new VBox();
+			container.getChildren().addAll(stockView, menuBar);
+			setCenter(container);
 			
-			BorderPane.setAlignment(getCenter(), Pos.CENTER);
 			
 		}
 		
 		public void returnBack() {
-			stockView.refresh();
 			menu.changeRightSide(this);
 		}
 		
@@ -70,14 +78,18 @@ public class ManagerView implements Viewable {
 		private void initMenus() {
 			Label deleteLabel = new Label("Delete");
 			deleteLabel.setOnMouseClicked(e -> {
-				Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to delete that item?",
-						ButtonType.YES, ButtonType.NO);
-				Optional<ButtonType> butons = alert.showAndWait();
-				if(butons.get() == ButtonType.YES)
-					stockView.delete();
-				
+					stockView.delete();	
 			});
-			Label suppliersLabel = new Label("Suppliers");
+			
+//			Label suppliersLabel = new Label("Suppliers");
+//			suppliersLabel.setOnMouseClicked(e->{
+//				menu.changeRightSide(new SuppliersView(ManagerView.this));
+//			});
+			
+			Label purchaseLabel = new Label("Purchase");
+			purchaseLabel.setOnMouseClicked(e->{
+				stockView.purchaseItem();
+			});
 			
 			MenuItem newItem = new MenuItem("Item");
 			newItem.setOnAction(e -> {
@@ -91,11 +103,11 @@ public class ManagerView implements Viewable {
 			Menu newMenu = new Menu("New");
 			
 			newMenu.getItems().addAll(newItem, newCategory);
-			Menu purchaseMenu = new Menu("", deleteLabel);
-			Menu suppliersMenu = new Menu("", suppliersLabel);
-			
-			menuBar.getMenus().addAll(newMenu, purchaseMenu, suppliersMenu);
-			setBottom(menuBar);
+			Menu deleteMenu = new Menu("", deleteLabel);
+	//		Menu suppliersMenu = new Menu("", suppliersLabel);
+			Menu purchaseMenu = new Menu("", purchaseLabel);
+			menuBar.getMenus().addAll(newMenu, purchaseMenu, deleteMenu);
+			//setBottom(menuBar);
 		}
 	}
 

@@ -1,5 +1,7 @@
 package view_models;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import javafx.geometry.Insets;
@@ -8,25 +10,32 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import models.User;
 import views.LogIn;
 
 public class SideMenu extends HBox {
-	private SidePannel sideMenu = new SidePannel();
+	private SidePannel sideMenu;
 	private Pane rightSide = new Pane();
 	private Stage stage;
+	private User user;
 	
-	public SideMenu(Stage stage) {
+	public SideMenu(Stage stage, User user) {
 		this.stage = stage;
+		this.user = user;
+		sideMenu = new SidePannel();
 		setPrefHeight(600);
 		getStylesheets().add("SideMenu.css");
 		getChildren().addAll(sideMenu, this.rightSide);
@@ -95,12 +104,46 @@ public class SideMenu extends HBox {
 		private void addHead() {
 			VBox rect = new VBox(5);
 			rect.setAlignment(Pos.CENTER);
-			Circle pic = new Circle(50, Color.WHITE);
-			rect.setPrefSize(300, 150);
-			Label text = new Label("Manager");
-			text.setFont(Font.font("", FontWeight.SEMI_BOLD, 20));
-			text.setTextFill(Color.WHITE);
-			rect.getChildren().addAll(pic, text);
+			Circle pic = new Circle(64, Color.WHITE);
+			rect.setPrefWidth(300);
+			Label label = new Label();
+			String text = "";
+			switch(user.getPermissionLevel()) {
+			case CASHIER:
+				text += "CASHIER";
+				try {
+					pic.setFill(new ImagePattern(new Image(new FileInputStream("Resources/images/cashier.png"))));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				break;
+			case MANAGER:
+				text += "MANAGER";
+				try {
+					pic.setFill(new ImagePattern(new Image(new FileInputStream("Resources/images/man.png"))));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				break;
+			case ADMINISTRATOR:
+				text += "ADMINSTRATOR";
+				try {
+					pic.setFill(new ImagePattern(new Image(new FileInputStream("Resources/images/admin.png"))));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				break;
+			}
+			text += "\n" + user.getName() + " " + user.getSurname();
+			label.setText(text);
+			label.setTextAlignment(TextAlignment.CENTER);
+			label.setFont(Font.font("", FontWeight.SEMI_BOLD, 20));
+			label.setTextFill(Color.WHITE);
+			rect.getChildren().addAll(pic, label);
 			setTop(rect);
 			setMargin(rect, new Insets(10, 0, 20, 0));
 		}

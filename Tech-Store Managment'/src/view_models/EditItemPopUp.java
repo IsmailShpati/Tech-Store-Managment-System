@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class EditItemPopUp extends Application {
 
@@ -59,8 +60,10 @@ public class EditItemPopUp extends Application {
 	    	stage.close();
 	    });
 	    stage.setScene(new Scene(root));
+	    stage.initStyle(StageStyle.UTILITY);
 	    stage.setTitle("Edit item entry");
 	    stage.show();
+	    stage.setAlwaysOnTop(true);
 		
 	}
 
