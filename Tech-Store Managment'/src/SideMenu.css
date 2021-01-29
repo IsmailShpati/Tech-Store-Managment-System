@@ -17,7 +17,8 @@
 }
 
 #selectedMenuBtn{
-	-fx-background-color: #000033;
+	-fx-background-color: black;
+	-fx-text-fill: white;
 }
 #sideMenuBtn:hover{
 	-fx-border-color: white;
@@ -27,4 +28,18 @@
 	-fx-background-color: red;
 }
 
+
+.menu-bar{
+	-fx-background-color: black;
+	-fx-pref-height: 30px;
+}
+
+.menu .label{
+	-fx-pref-width:100px;
+	-fx-text-fill: white;
+}
+
+.menu-item .label{
+	-fx-text-fill: black;
+}
 

@@ -1,20 +1,22 @@
 package models;
 
-public class BillItem extends Item{
+public class BillItem extends Item implements Comparable<BillItem>{
 
 	private static final long serialVersionUID = 3898208526204791983L;
 	
 	
-	private static int BillNo;
-	private int quantity, id;
+	private int quantity;
 	
 	
 	public BillItem(String itemName, String itemModel, 
 			double sellingPrice, int quantity) {
 		super(itemName, itemModel, sellingPrice);
-		BillNo++;
-		id = BillNo;
 		this.quantity = quantity;
+	}
+	
+	//For deep copying
+	public BillItem(BillItem i) {
+		this(i.getItemName(), i.getSellingPrice(), i.getQuantity());
 	}
 	
 	public BillItem(String itemName, double sellingPrice, int quantity) {
@@ -31,10 +33,21 @@ public class BillItem extends Item{
 	}
 	
 	
+	public boolean equals(BillItem i) {
+		if(getItemName().equals(i.getItemName()))
+			if(getSellingPrice() == i.getSellingPrice())
+				return true;
+		return false;
+	}
+	
+	
 	public double getTotalBillPrice() {
 		return quantity * getSellingPrice();
 	}
 
-	
-	public int getBillNO() { return id; }
+
+	@Override
+	public int compareTo(BillItem b) {
+		return getItemName().compareTo(b.getItemName());
+	}
 }

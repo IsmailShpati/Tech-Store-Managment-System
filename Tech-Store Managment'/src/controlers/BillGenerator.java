@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import models.Bill;
 import models.BillItem;
+import models.Cashier;
 
 public class BillGenerator {
 
@@ -37,9 +38,8 @@ public class BillGenerator {
 	}
 	
 	
-	public static void printBill(Bill b) {
+	public static void printBill(Bill b, Cashier cashier) {
 		try {
-			//CashierName + billNO
 			File destination = new File(folderPath+billNO);
 			if(destination.exists()) 
 				destination = new File(folderPath+billNO);
@@ -50,7 +50,7 @@ public class BillGenerator {
 			write.print(billNO);
 			write.close();
 			writer = new PrintWriter(destination);
-			writer.print(formatBill(b));
+			writer.print(formatBill(b, cashier));
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -58,9 +58,9 @@ public class BillGenerator {
 	}
 	
 	//Using StringBuilder when making multiple concatinations to increase efficiency
-	private static String formatBill(Bill b) {
+	private static String formatBill(Bill b, Cashier cashier) {
 		StringBuilder format = new StringBuilder();
-        format.append( getBillHeader(b));	
+        format.append( getBillHeader(b, cashier.getName() + " " + cashier.getSurname()));	
         
         for(BillItem i : b.getItems()) {
         	format.append(formatItemInfo(i));
@@ -79,10 +79,11 @@ public class BillGenerator {
 		return itemInfo.toString();	
 	}
 	
-	public static String getBillHeader(Bill b) {
+	public static String getBillHeader(Bill b, String cashier) {
 		StringBuilder header = new StringBuilder();
 		header.append("\n" + centerText("Tech-Store") + "\n");
 		header.append(b.getDate()+"\n");
+		header.append("Cashier: " + cashier + "\n");
 		header.append(repeat('#', BILL_WIDTH) + "\n\n");
 		
 		return header.toString();

@@ -11,16 +11,15 @@ import java.util.ArrayList;
 
 public class Cashier extends User {
 
+	private static final long serialVersionUID = 5195613300800700695L;
+
 	private ArrayList<Bill> bills = new ArrayList<>();
-	private String name, surname;
 	private File file;
 	private String dbPath;
 	
-	public Cashier(String username, String password, PermissionLevel permissionLevel
-			,String name, String surname) {
-		super(username, password, permissionLevel);
-		this.name = name;
-		this.surname = surname;
+	public Cashier(String username, String password,String name, String surname,
+		  PermissionLevel permissionLevel, double salary, LocalDate birthday ) {
+		super(username, password, name, surname, permissionLevel, salary, birthday);
 		
 		initFile();
 		 
@@ -28,7 +27,7 @@ public class Cashier extends User {
 	
 	@SuppressWarnings("unchecked")
 	private void initFile() {
-		dbPath = "databases/Cashier Database/" + name + surname; 
+		dbPath = "databases/Cashier Database/" + getName() + getSurname(); 
 		file = new File(dbPath);
 		if(!file.exists())
 			try {
@@ -39,9 +38,7 @@ public class Cashier extends User {
 		else {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-				
 				bills = (ArrayList<Bill>) ois.readObject();
-				
 				ois.close();
 			} catch ( IOException |ClassNotFoundException e) {
 				System.err.println("Error reading from file Cashier" +  e.getMessage());;
@@ -55,17 +52,15 @@ public class Cashier extends User {
 		saveChange();
 	}
 	
-	
 	private void saveChange() {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
-			oos.writeObject(bills.get(bills.size()-1));
+			oos.writeObject(bills);
 			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
 	}
-	
 	
 	public ArrayList<Bill> getBillsInPeriod(LocalDate start, LocalDate end){
 		ArrayList<Bill> billsInPeriod = new ArrayList<>();
@@ -74,9 +69,22 @@ public class Cashier extends User {
 					end.compareTo(b.getDate().toLocalDate()) > 0)
 				billsInPeriod.add(b);		
 		}
-		
-		
 		return null;
 	}
-
+	
+	public ArrayList<Bill> getBillsInDate(LocalDate date){
+		ArrayList<Bill> billsInDate = new ArrayList<>();
+		for(Bill b : bills) {
+			if(date.compareTo(b.getDate().toLocalDate()) == 0)
+				billsInDate.add(b);
+		}
+		return billsInDate;
+	}
+	
+	public double getTotalIncome() {
+		double income = 0;
+		for(Bill b : bills)
+			income += b.getTotalBillPrice();
+		return income;
+	}
 }

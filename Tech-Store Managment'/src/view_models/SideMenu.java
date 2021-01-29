@@ -1,23 +1,35 @@
 package view_models;
 
+import java.util.Optional;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import views.LogIn;
 
 public class SideMenu extends HBox {
 	private SidePannel sideMenu = new SidePannel();
 	private Pane rightSide = new Pane();
+	private Stage stage;
 	
-	
-	public SideMenu() {
+	public SideMenu(Stage stage) {
+		this.stage = stage;
+		setPrefHeight(600);
 		getStylesheets().add("SideMenu.css");
-		setSpacing(40);
 		getChildren().addAll(sideMenu, this.rightSide);
 	}
 	
@@ -25,6 +37,7 @@ public class SideMenu extends HBox {
 		this.rightSide = pane;
 		getChildren().remove(1);
 		getChildren().add(rightSide);
+		stage.sizeToScene();
 	}
 	
 	public void addButton(Pane pane, String btnText) {
@@ -33,21 +46,30 @@ public class SideMenu extends HBox {
 	
 	
 	//Inner class
-	class SidePannel extends VBox{
+	class SidePannel extends BorderPane{
+		private VBox body = new VBox();
 		private int nrButtons = 0;
 		private Button selectedBtn = new Button();
 		public SidePannel() {
-			setSpacing(40);
+			
+			body.setSpacing(40);
+			
 			setId("menuPannel");
-			setPadding(new Insets(50, 0, 50, 0));
-			setAlignment(Pos.TOP_CENTER);
+			//body.setPadding(new Insets(50, 0, 50, 0));
+			body.setAlignment(Pos.TOP_CENTER);
 			Button logOut = new Button("Log out");
 			logOut.setId("logOutBtn");
-			getChildren().add(logOut);
+			addHead();
+			setBottom(logOut);
+			setCenter(body);
 			logOut.setOnAction(e->{
 				System.out.println("LogginOut");
+				
 				Alert alert = new Alert(AlertType.CONFIRMATION, "Wanna log out?", ButtonType.YES, ButtonType.NO);
-				alert.show();
+				Optional<ButtonType> butons = alert.showAndWait();
+				if(butons.get() == ButtonType.YES)
+					new LogIn().setView(stage);
+					
 			});
 		}
 		
@@ -59,7 +81,7 @@ public class SideMenu extends HBox {
 				btn.setId("selectedMenuBtn");
 				changeRightSide(pane);
 			}
-			getChildren().add(nrButtons++, btn);
+			body.getChildren().add(nrButtons++, btn);
 			btn.setOnAction(e -> {
 			 if(selectedBtn != btn) {
 				selectedBtn.setId("sideMenuBtn");
@@ -69,6 +91,19 @@ public class SideMenu extends HBox {
 			 }
 			});
 			
+		}
+		
+		private void addHead() {
+			VBox rect = new VBox(5);
+			rect.setAlignment(Pos.CENTER);
+			Circle pic = new Circle(50, Color.WHITE);
+			rect.setPrefSize(300, 150);
+			Label text = new Label("Manager");
+			text.setFont(Font.font("", FontWeight.SEMI_BOLD, 20));
+			text.setTextFill(Color.WHITE);
+			rect.getChildren().addAll(pic, text);
+			setTop(rect);
+			setMargin(rect, new Insets(10, 0, 20, 0));
 		}
 		
 	}

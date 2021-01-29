@@ -10,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import models.BillItem;
 
+//CASHIER VIEW
 //Contains all needed nodes to perform the addition of a product [Right Side of the CashierView]
 public class AddItem extends GridPane {
 
