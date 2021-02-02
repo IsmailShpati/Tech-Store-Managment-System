@@ -1,7 +1,31 @@
+.default-color0.chart-pie { -fx-pie-color: green; }
+.default-color1.chart-pie { -fx-pie-color: red; }
 
+.default-color0.chart-bar { -fx-bar-fill: yellow;}
+.default-color1.chart-bar { -fx-bar-fill: red;}
+.default-color2.chart-bar { -fx-bar-fill: lime;}
+
+.root{
+	-fx-background-color:#D3D3D3; 
+}
+
+
+.table-view{
+	-fx-background-color: transparent;
+}
+.table-view:selected{
+	-fx-background-color: transparent;
+}
+
+.table-row-cell:selected {
+   -fx-background-color: gray; 
+   -fx-text-background-color:  white;
+   
+       
+}
 #menuPannel{
 	-fx-border-width: 2px;
-	-fx-background-color: blue;
+	-fx-background-color: linear-gradient(to bottom right, #485461, #28313B);
 	-fx-min-width: 300px;
 }
 
@@ -17,8 +41,8 @@
 }
 
 #selectedMenuBtn{
-	-fx-background-color: black;
-	-fx-text-fill: white;
+	-fx-background-color: aqua;
+	-fx-text-fill: black;
 }
 #sideMenuBtn:hover{
 	-fx-border-color: white;
@@ -27,7 +51,6 @@
 #logOutBtn:hover{
 	-fx-background-color: red;
 }
-
 
 .menu-bar{
 	-fx-background-color: black;
@@ -50,4 +73,3 @@
 .table-cell{
 	-fx-font-size: 16;
 }
-

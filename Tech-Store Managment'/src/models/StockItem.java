@@ -24,7 +24,10 @@ public class StockItem extends Item {
 		this.category = category;
 	}
 
-	public int getStockQuantity() {
+	public String getStockQuantity() {
+		return stockQuantity+"";
+	}
+	public int getQuantity() {
 		return stockQuantity;
 	}
 
@@ -32,7 +35,10 @@ public class StockItem extends Item {
 		this.stockQuantity = stockQuantity;
 	}
 
-	public double getPurchasingPrice() {
+	public String getPurchasingPrice() {
+		return purchasingPrice+"";
+	}
+	public double getpurchasingPrice() {
 		return purchasingPrice;
 	}
 

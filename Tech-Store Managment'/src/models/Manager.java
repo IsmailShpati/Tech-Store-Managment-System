@@ -18,8 +18,8 @@ public class Manager extends User {
 	private File file;
 	
 	public Manager(String username, String password,String name, String surname,
-			  PermissionLevel permissionLevel, double salary, LocalDate birthday ) {
-			super(username, password, name, surname, permissionLevel, salary, birthday);
+			  PermissionLevel permissionLevel, double salary, LocalDate birthday, String phoneNumber ) {
+			super(username, password, name, surname, permissionLevel, salary, birthday, phoneNumber);
 			
 		initFile();
 	}
@@ -30,6 +30,7 @@ public class Manager extends User {
 		file = new File(dbPath);
 		if(!file.exists())
 			try {
+				System.out.println("Creating");
 				file.createNewFile();
 			} catch (IOException e) {
 				System.err.println("Error creating new file Cashier" + e.getMessage());
@@ -40,12 +41,18 @@ public class Manager extends User {
 				purchases = (ArrayList<PurchaseBill>) ois.readObject();
 				ois.close();
 			} catch ( IOException |ClassNotFoundException e) {
-				System.err.println("Error reading from file Cashier" +  e.getMessage());;
+				System.err.println("Error reading from file Manager" +  e.getMessage());;
 			} 
 		}
 	}
 	
+	public ArrayList<PurchaseBill> getPurchases() { 
+		initFile();
+		return purchases; 
+	}
+	
 	public void addPurchase(PurchaseBill pb) {
+		initFile();
 		purchases.add(pb);
 		saveChange();
 	}
@@ -53,7 +60,7 @@ public class Manager extends User {
 	private void saveChange() {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
-			oos.writeObject(purchases.get(purchases.size()-1));
+			oos.writeObject(purchases);
 			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,28 +68,48 @@ public class Manager extends User {
 	}
 
 	public double getTotalPurchasesDate(LocalDate start, LocalDate end) {
+		initFile();
 		double purchasesMade = 0;
 		for(PurchaseBill p : purchases) {
-			if(start.compareTo(p.getPurchaseDate()) <= 0 && 
-					end.compareTo(p.getPurchaseDate()) >= 0) 
+			if(start.compareTo(p.getPurchaseDate().toLocalDate()) <= 0 && 
+					end.compareTo(p.getPurchaseDate().toLocalDate()) >= 0) 
 				purchasesMade += p.getBillPrice();
 		}
 		return purchasesMade;
 	}
 	
 	public double getTotalPurchaseDate(LocalDate date) {
+		initFile();
 		double totalPurchases = 0;
 		for(PurchaseBill p : purchases) {
-			if(date.compareTo(p.getPurchaseDate()) == 0)
+			if(date.compareTo(p.getPurchaseDate().toLocalDate()) == 0)
 				totalPurchases += p.getBillPrice();
 		}
 		return totalPurchases;
 	}
 
 	public double getTotalPurchases() {
+		initFile();
 		double total = 0;
-		for(PurchaseBill p : purchases)
+		for(PurchaseBill p : purchases) {
 			total += p.getBillPrice();
+		}
 		return total;
+	}
+	
+	public void deleteFile() {
+		file.delete();
+	}
+
+	public ArrayList<PurchaseBill> getPurchasesInPeriod(LocalDate from, LocalDate to) {
+			initFile();
+			ArrayList<PurchaseBill> billsInPeriod = new ArrayList<>();
+			for(PurchaseBill b : purchases) {
+				if(from.compareTo(b.getPurchaseDate().toLocalDate()) <= 0 && 
+						to.compareTo(b.getPurchaseDate().toLocalDate()) >= 0)
+					billsInPeriod.add(b);		
+			
+		}
+		return billsInPeriod;
 	}
 }

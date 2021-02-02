@@ -1,12 +1,22 @@
 package views;
 
+import java.util.Optional;
+
 import interfaces.Viewable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import models.Administrator;
 import view_models.AddUserView;
+import view_models.AdminStatistics;
 import view_models.SideMenu;
+import view_models.UsersView;
 
 public class AdministratorView implements Viewable{
 
@@ -14,27 +24,44 @@ public class AdministratorView implements Viewable{
 	public AdministratorView(Administrator user) {
 		this.user = user;
 	}
-
+	
 	@Override
 	public void setView(Stage stage) {
 		new AdministratorPannel(stage).setView();
-		
+		stage.centerOnScreen();
+		stage.setOnCloseRequest(e->{
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to close the application?",
+					ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> butons = alert.showAndWait();
+			if(butons.get() == ButtonType.NO) {
+				e.consume();
+			}
+		});
 	}
 	
-	class AdministratorPannel extends BorderPane{
+	public class AdministratorPannel extends BorderPane{
 		private Stage stage;
 		private SideMenu menu;
-		private AddUserView addUser = new AddUserView();
-		
+		private AddUserView addUser;
+		private MenuBar menuBar = new MenuBar();
+		private UsersView usersView;
 		public AdministratorPannel(Stage stage) {
 			this.stage = stage;
-			setCenter(addUser);
+			usersView = new UsersView();
+			addUser = new AddUserView(this);
+			setCenter(usersView);
+			initMenuBar();
+			setBottom(menuBar);
 			initMenu();
+		}
+		public void refresh() {
+			usersView.refresh();
 		}
 		
 		private void initMenu() {
 			menu = new SideMenu(stage, user);
 			menu.addButton(this, "Add user");
+			menu.addButton(new AdminStatistics(), "Income");
 		}
 		
 		public void setView() {
@@ -42,7 +69,23 @@ public class AdministratorView implements Viewable{
 			stage.setScene(new Scene(menu));
 		}
 		
+		private void initMenuBar() {
+			Label newLabel = new Label("New");
+			newLabel.setOnMouseClicked(e -> {
+				menu.changeRightSide(addUser);
+			});
+			
+			Label deleteLabel = new Label("Delete");
+			deleteLabel.setOnMouseClicked(e->{
+				usersView.delete();
+			});
+			
+			menuBar.getMenus().addAll(new Menu("", newLabel), new Menu("", deleteLabel));
+		}
 		
+		public void returnBack() {
+			menu.changeRightSide(this);
+		}
 		
 	}
 

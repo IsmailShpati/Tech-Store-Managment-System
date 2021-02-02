@@ -13,6 +13,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import models.Manager;
+import models.PurchaseBill;
 import models.StockItem;
 import view_models.PurchaseStock.StockView;
 
@@ -33,7 +35,10 @@ public class PurchasePopUp extends Application {
 	private void initPurchaseBtn(Button btn) throws ViewException {
 		btn.setOnAction(e -> {
 			StockController.purchaseStock(item, quantity.getQuantity());
+			Manager m = stockView.getManager();
 			stockView.refresh();
+			m.addPurchase(new PurchaseBill(item.getItemName(), m.getName()+ " " + m.getSurname(),
+					quantity.getQuantity(), item.getpurchasingPrice()));
 			stage.close();
 			new Alert(AlertType.CONFIRMATION).show();
 		});

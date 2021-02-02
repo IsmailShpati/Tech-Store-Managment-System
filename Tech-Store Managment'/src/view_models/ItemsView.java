@@ -1,12 +1,16 @@
 package view_models;
 
+import java.util.Optional;
+
 import controllers.StockController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
@@ -34,7 +38,6 @@ public class ItemsView extends BorderPane {
 	private Bill bill = new Bill();
 	
 	public ItemsView() {
-	//	setPrefWidth(300);
 		setPadding(new Insets(0, 30, 0,30));
 		itemsShow.setHgap(30);
 		itemsShow.setVgap(10);
@@ -54,6 +57,7 @@ public class ItemsView extends BorderPane {
 	
 	private void addItems() {
 		table = new TableView<>();
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		addColumn(table, "itemName", "Name");
 		addColumn(table, "sellingPrice", "Price");
 		addColumn(table, "quantity", "Quant.");
@@ -77,9 +81,22 @@ public class ItemsView extends BorderPane {
 	}
 	
 	public void addItem(String itemName, double price, int quantity) {
-		BillItem b = new BillItem(itemName, price, quantity);
-		items.add(b);
-	    bill.addBillItem(b);
+		boolean contains = false;
+		for(BillItem item : items) {
+			System.out.println(item.getItemName());
+			if(item.getItemName().equals(itemName)) {
+				System.out.println(item.getItemName() + " " + itemName);
+				item.setQuantity(item.getQuantity() + quantity);
+				contains = true;
+			}
+		if(!contains) {
+			System.out.println("Doesn't contin");
+			BillItem b = new BillItem(itemName, price, quantity);
+			items.add(b);
+			bill.addBillItem(b);
+		}
+			
+		}
 	}
 	
 	public void editSelected(String name, int quantity) throws ViewException{
@@ -89,7 +106,7 @@ public class ItemsView extends BorderPane {
 			System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
 			items.set(selectedRow, b);
 			bill.editItem(selectedRow, b);
-			addItemView.changeTotalPrice(b.getQuantity() * b.getSellingPrice());
+			addItemView.changeTotalPrice(b.getQuantity() * b.getsellingPrice());
 		}
 			else {
 				throw new ViewException( "No item with that name exists", AlertType.ERROR);
@@ -107,17 +124,29 @@ public class ItemsView extends BorderPane {
 		bottom.setAlignment(Pos.CENTER);
 		Button edit = new Button("Edit");
 		edit.setOnAction((event) -> {
-			BillItem i = items.get(selectedRow);
+			BillItem i = table.getSelectionModel().getSelectedItem();
 			
 			new EditItemPopUp(i.getItemName(), i.getQuantity(), this).start(new Stage());
 		});
-		bottom.getChildren().addAll(deselect, edit);
+		Button delete = new Button("Delete");
+		delete.setOnAction(e->{
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to delete the selected item from the bill?",
+					ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> butons = alert.showAndWait();
+			if(butons.get() == ButtonType.YES) {
+				BillItem i = table.getSelectionModel().getSelectedItem();
+				addItemView.changeTotalPrice(-1*i.getTotalBillPrice());
+				StockController.purchaseStock(StockController.getItem(i.getItemName()), i.getQuantity());
+				items.remove(i);
+			}
+		});
+		bottom.getChildren().addAll(deselect, edit, delete);
 		//setBottom(bottom);
 	}
 	
-	public double getTotalPrice() {
-		return totalPrice;
-	}
+//	public double getTotalPrice() {
+//		return totalPrice;
+//	}
 	
 	public void clearItems() {
 		bill = new Bill();
@@ -129,9 +158,20 @@ public class ItemsView extends BorderPane {
 	}
 
 	public void addItem(BillItem b) {
-		items.add(b);
-		bill.addBillItem(b);
-		
+		boolean contains = false;
+		for(BillItem item : items) {
+			System.out.println(item.getItemName());
+			if(item.getItemName().equals(b.getItemName())) {
+				item.setQuantity(item.getQuantity() + b.getQuantity());
+				contains = true;
+				table.refresh();
+			}		
+		}
+		if(!contains) {
+			System.out.println("Doesn't contin");
+			items.add(b);
+			bill.addBillItem(b);
+		}
 	}
 	
 	public Bill getBill() {

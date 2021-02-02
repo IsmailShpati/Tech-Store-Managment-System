@@ -1,7 +1,5 @@
 package view_models;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import javafx.geometry.Insets;
@@ -71,8 +69,7 @@ public class SideMenu extends HBox {
 			setBottom(logOut);
 			setCenter(body);
 			logOut.setOnAction(e->{
-				System.out.println("LogginOut");
-				
+				System.out.println("LogginOut");	
 				Alert alert = new Alert(AlertType.CONFIRMATION, "Wanna log out?", ButtonType.YES, ButtonType.NO);
 				Optional<ButtonType> butons = alert.showAndWait();
 				if(butons.get() == ButtonType.YES)
@@ -108,34 +105,18 @@ public class SideMenu extends HBox {
 			rect.setPrefWidth(300);
 			Label label = new Label();
 			String text = "";
-			switch(user.getPermissionLevel()) {
+			switch(user.getPermission()) {
 			case CASHIER:
 				text += "CASHIER";
-				try {
-					pic.setFill(new ImagePattern(new Image(new FileInputStream("Resources/images/cashier.png"))));
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				pic.setFill(new ImagePattern(new Image("Resources/cashier.png")));
 				break;
 			case MANAGER:
 				text += "MANAGER";
-				try {
-					pic.setFill(new ImagePattern(new Image(new FileInputStream("Resources/images/man.png"))));
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				pic.setFill(new ImagePattern(new Image("Resources/man.png")));
 				break;
 			case ADMINISTRATOR:
 				text += "ADMINSTRATOR";
-				try {
-					pic.setFill(new ImagePattern(new Image(new FileInputStream("Resources/images/admin.png"))));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
+				pic.setFill(new ImagePattern(new Image("Resources/admin.png")));
 				break;
 			}
 			text += "\n" + user.getName() + " " + user.getSurname();

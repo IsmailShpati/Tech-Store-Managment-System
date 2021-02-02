@@ -2,13 +2,16 @@ package view_models;
 
 import controllers.StockController;
 import interfaces.ViewException;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import models.BillItem;
+import models.StockItem;
 
 //CASHIER VIEW
 //Contains all needed nodes to perform the addition of a product [Right Side of the CashierView]
@@ -16,13 +19,14 @@ public class AddItem extends GridPane {
 
 	private ItemsView itemsView;
 	private QuantityPlusMinus quantity = new QuantityPlusMinus(1);
-	private TextField nameField = new TextField();
+	private ComboBox<StockItem> items;
 	private Label totalPrice = new Label("Total price: 0.00");
 	private double totalP;
 	private int startingColumn, startingRow; //Initialized by 0
 	
 	public AddItem(ItemsView itemsView) {
 		this.itemsView = itemsView;
+		items = new ComboBox<>();
 		initGrid();
 		initLabelsFields();
 		initAddBtn();
@@ -41,29 +45,22 @@ public class AddItem extends GridPane {
 		add(nameLabel, startingColumn, startingRow);
 		add(quantityLabel, startingColumn+1, startingRow++);
 		
-		add(nameField, startingColumn, startingRow);
+		add(items, startingColumn, startingRow);
+		items.setPrefWidth(200);
+		items.setItems(FXCollections.observableArrayList(StockController.getItems()));
+		items.setValue(StockController.getItems().get(0));
 		add(quantity, startingColumn+1, startingRow++);
 	}
 	
 	private void initAddBtn() {
 		Button addItem = new Button("ADD ITEM");
 		addItem.setOnAction(E -> {
-			if(nameField.getText().length() < 1) {
-				ViewException.showAlert( "Please fill the name", AlertType.ERROR);
-			}
-			else {
-				try {
-				    BillItem b = StockController.getItem(nameField.getText(), quantity.getQuantity(), 0);
-				    System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
-					itemsView.addItem(b);
-					quantity.reset();
-					nameField.clear();
-					changeTotalPrice(b.getQuantity()*b.getSellingPrice());
-				}catch(ViewException e) {
-					e.showAlert();
-				}
-				
-			}
+			StockItem i = items.getValue();
+			BillItem b = new BillItem(i.getItemName(), i.getsellingPrice(), quantity.getQuantity());
+			itemsView.addItem(b);
+			quantity.reset();
+			items.setValue(StockController.getItems().get(0));
+			changeTotalPrice(b.getQuantity()*b.getsellingPrice());
 		});
 		add(addItem, startingColumn+1, startingRow++);
 	}
@@ -74,8 +71,8 @@ public class AddItem extends GridPane {
 	}
 	
 	public void resetTotalPrice() {
-	   nameField.clear();
 	   totalP = 0.0;
+	   items.setValue(StockController.getItems().get(0));
 	   quantity.reset();
 	   totalPrice.setText("Total price: 0.00");	
 	}

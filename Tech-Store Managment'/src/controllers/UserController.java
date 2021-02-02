@@ -6,10 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import interfaces.ViewException;
 import javafx.scene.control.Alert.AlertType;
+import models.Administrator;
 import models.Cashier;
 import models.Manager;
 import models.PermissionLevel;
@@ -23,13 +25,6 @@ public class UserController {
 	
 	static {
 		//Read from the database all users
-//		Cashier c = new Cashier("cashier", "1234", "c", "c", PermissionLevel.CASHIER, 129, LocalDate.now());
-//		Manager m = new Manager("manager", "1234", "m", "m", PermissionLevel.MANAGER, 129,LocalDate.now());
-//		users.add(m);
-//		users.add(c);
-//		Manager d = new Manager("ili", "1234", "e", "e", PermissionLevel.MANAGER, 129,LocalDate.now());
-//		users.add(d);
-		
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(db));
 			users = (ArrayList<User>)in.readObject();
@@ -53,15 +48,11 @@ public class UserController {
 	}
 	
 	public static void addUser(User u) throws ViewException {
-		for(User current : users) {
+		for(User current : users) 
 			equals(current, u); //It will throw the exception
-				
-		}
+
 		users.add(u);
 		save();
-		for(User user : users) {
-			System.out.println(user.getUsername() + " " + user.getPassword());
-		}
 	}
 	
 	
@@ -69,10 +60,9 @@ public class UserController {
 	private static boolean equals(User current, User newU) throws ViewException {
 		if(current.getUsername().equals(newU.getUsername()))
 			throw new ViewException("Username alredy exists", AlertType.ERROR);
-		if(current.getPermissionLevel() == newU.getPermissionLevel())
-			if(current.getUsername().equals(newU.getUsername()))
-				if(current.getName().equals(newU.getName()))
-					if(current.getSurname().equals(newU.getSurname()))
+		if(current.getPermission() == newU.getPermission())
+				if(current.getName().equals(newU.getName()) && 
+						current.getSurname().equals(newU.getSurname()))
 						throw new ViewException("User with the same name and surname alredy exists", 
 								AlertType.ERROR);
 		return false;
@@ -91,10 +81,24 @@ public class UserController {
 		}
 	}
 	
+	public static void removeUser(User u) {
+		if(u.getPermission() == PermissionLevel.CASHIER)
+			((Cashier)u).deleteFile();
+		else if(u.getPermission() == PermissionLevel.MANAGER)
+			((Manager)u).deleteFile();
+		
+		users.remove(u);
+		save();
+	}
+	
+	public static ArrayList<User> getUsers(){
+		return users;
+	}
+	
 	public static ArrayList<Cashier> getCashiers(){
 		ArrayList<Cashier> cashiers = new ArrayList<>();
 		for(User u : users)
-			if(u.getPermissionLevel() == PermissionLevel.CASHIER)
+			if(u.getPermission() == PermissionLevel.CASHIER)
 				cashiers.add((Cashier)u);
 		return cashiers;
 	}
@@ -102,7 +106,7 @@ public class UserController {
 	public static ArrayList<Manager> getManagers(){
 		ArrayList<Manager> cashiers = new ArrayList<>();
 		for(User u : users)
-			if(u.getPermissionLevel() == PermissionLevel.MANAGER)
+			if(u.getPermission() == PermissionLevel.MANAGER)
 				cashiers.add((Manager)u);
 		return cashiers;
 	}
@@ -116,4 +120,10 @@ public class UserController {
 			System.err.println("[UserController]problems with save");
 		}
 	}
+ 	
+ 	public static void exists(String username) throws ViewException {
+ 		for(User u : users)
+ 			if(u.getUsername().equals(username))
+ 				throw new ViewException("Username alredy exists", AlertType.ERROR);
+ 	}
 }

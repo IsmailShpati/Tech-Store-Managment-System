@@ -1,5 +1,7 @@
 package views;
 
+import java.util.Optional;
+
 import controllers.BillGenerator;
 import interfaces.Viewable;
 import javafx.geometry.Insets;
@@ -18,7 +20,6 @@ import view_models.ItemsView;
 import view_models.SideMenu;
 
 public class CashierView  implements Viewable{
-	
 	private Cashier cashier;
 	
 	public CashierView(Cashier cashier) {
@@ -29,8 +30,26 @@ public class CashierView  implements Viewable{
 	public void setView(Stage stage) {
 
 		stage.setTitle("Cashier view");
-		stage.setScene(new Scene(new CashierPannel(stage).getMenu()));
+		CashierPannel cp = new CashierPannel(stage);
+		stage.setOnCloseRequest(e->{
+			if(!cp.isBillEmpty()) {
+				new Alert(AlertType.ERROR,
+						"There are items alredy added to the bill. Choose what you will do with them.").showAndWait();
+				e.consume();
+			}
+			else {
+				Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to close the application?",
+						ButtonType.YES, ButtonType.NO);
+				Optional<ButtonType> butons = alert.showAndWait();
+				if(butons.get() == ButtonType.NO) {
+					e.consume();
+				}
+			}
+		});
+		stage.setScene(new Scene(cp.getMenu()));
 		stage.sizeToScene();
+		stage.centerOnScreen();
+
 	}
 	
 	class CashierPannel extends BorderPane{
@@ -61,10 +80,12 @@ public class CashierView  implements Viewable{
 					BillGenerator.printBill(b, cashier);
 					leftSide.clearItems();
 					rightSide.resetTotalPrice();
-					
 					new Alert(AlertType.CONFIRMATION, 
 							"Bill printed", ButtonType.OK).showAndWait();	
 				}
+				else 
+					new Alert(AlertType.WARNING, 
+							"No items added to bill", ButtonType.OK).showAndWait();
 			});
 			
 			BorderPane.setMargin(printBtn, new Insets(20));
@@ -73,6 +94,10 @@ public class CashierView  implements Viewable{
 		}
 		public SideMenu getMenu() {
 			return menu;
+		}
+		
+		public boolean isBillEmpty() {
+			return leftSide.isEmpty();
 		}
 	}
 	

@@ -99,6 +99,7 @@ public class SuppliersView extends VBox {
 			try {
 				validate();
 				SupplierController.addSupplier(new Supplier(nameField.getText(), phoneField.getText()));
+				refresh();
 				stage.close();
 			} catch (ViewException e1) {
 				e1.showAlert();

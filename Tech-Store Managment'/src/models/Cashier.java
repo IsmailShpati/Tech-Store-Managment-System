@@ -18,8 +18,8 @@ public class Cashier extends User {
 	private String dbPath;
 	
 	public Cashier(String username, String password,String name, String surname,
-		  PermissionLevel permissionLevel, double salary, LocalDate birthday ) {
-		super(username, password, name, surname, permissionLevel, salary, birthday);
+		  PermissionLevel permissionLevel, double salary, LocalDate birthday, String phoneNumber ) {
+		super(username, password, name, surname, permissionLevel, salary, birthday, phoneNumber);
 		
 		initFile();
 		 
@@ -39,6 +39,10 @@ public class Cashier extends User {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 				bills = (ArrayList<Bill>) ois.readObject();
+//				System.out.println("==========="+getName() + "========");
+//				for(Bill b : bills)
+//					for(BillItem i : b.getItems())
+//						System.out.println(i.getItemName() + " " + i.getQuantity());
 				ois.close();
 			} catch ( IOException |ClassNotFoundException e) {
 				System.err.println("Error reading from file Cashier" +  e.getMessage());;
@@ -48,6 +52,7 @@ public class Cashier extends User {
 	
 	
 	public void addBill(Bill b) {
+		initFile();
 		bills.add(b);
 		saveChange();
 	}
@@ -63,23 +68,28 @@ public class Cashier extends User {
 	}
 	
 	public ArrayList<Bill> getBillsInPeriod(LocalDate start, LocalDate end){
+		initFile();
 		ArrayList<Bill> billsInPeriod = new ArrayList<>();
 		for(Bill b : bills) {
-			if(start.compareTo(b.getDate().toLocalDate()) < 0 && 
-					end.compareTo(b.getDate().toLocalDate()) > 0)
+			if(start.compareTo(b.getDate().toLocalDate()) <= 0 && 
+					end.compareTo(b.getDate().toLocalDate()) >= 0)
 				billsInPeriod.add(b);		
 		}
-		return null;
+		return billsInPeriod;
 	}
 	
-	public ArrayList<Bill> getBillsInDate(LocalDate date){
-		ArrayList<Bill> billsInDate = new ArrayList<>();
+	public int getNrBillsInPeriod(LocalDate start, LocalDate end) {
+		initFile();
+		int cnt = 0;
 		for(Bill b : bills) {
-			if(date.compareTo(b.getDate().toLocalDate()) == 0)
-				billsInDate.add(b);
+			if(start.compareTo(b.getDate().toLocalDate()) <= 0 && 
+					end.compareTo(b.getDate().toLocalDate()) >= 0)
+				cnt++;		
 		}
-		return billsInDate;
+		return cnt;
 	}
+	
+	public ArrayList<Bill> getBills(){ initFile(); return bills; }
 	
 	public double getTotalIncome() {
 		double income = 0;
@@ -87,4 +97,9 @@ public class Cashier extends User {
 			income += b.getTotalBillPrice();
 		return income;
 	}
+	
+	public void deleteFile() {
+		file.delete();
+	}
+	
 }

@@ -71,8 +71,8 @@ public class StockController {
 	public static String getLowStockItems() {
 		StringBuilder lowStock = new StringBuilder();
 		for(StockItem i : itemsAvaible)
-			if(i.getStockQuantity() < 5)
-				lowStock.append(i.getItemName() + " " + i.getStockQuantity() + "\n");
+			if(i.getQuantity() < 5)
+				lowStock.append(i.getItemName() + " -> " + i.getStockQuantity() + " in stock\n");
 		return lowStock.toString();
 	}
 	
@@ -99,7 +99,7 @@ public class StockController {
 //				
 //	}
 	
-	private static void save() {
+	public static void save() {
 		try {
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path));
 			out.writeObject(itemsAvaible);
@@ -113,9 +113,10 @@ public class StockController {
 	public static BillItem getItem(String name, int quantity, int oldQuantity) throws ViewException {
 		for(StockItem i : itemsAvaible)
 			if(i.getItemName().equals(name)) {
-				if(i.getStockQuantity() >= quantity) {
+				if(i.getQuantity() >= quantity) {
 					i.sellStock(quantity - oldQuantity);
-					return new BillItem(name, i.getSellingPrice(), quantity);
+					save();
+					return new BillItem(name, i.getsellingPrice(), quantity);
 				}
 				else {//TODO throw Exeption, not enough stock, only x items left}
 					throw new ViewException("Not enough stock left for that item, only " 
@@ -130,5 +131,19 @@ public class StockController {
 		itemsAvaible.remove(i);
 		save();
 		
+	}
+	
+	public static StockItem getItem(String name) {
+		for(StockItem i : itemsAvaible)
+			if(name.equals(i.getItemName()))
+				return i;
+		return null;
+	}
+	
+	public static void exists(String name) throws ViewException{
+		for(StockItem i : itemsAvaible)
+			if(name.equals(i.getItemName())) {
+				throw new ViewException("An item with that name alredy exists", AlertType.ERROR);
+			}
 	}
 }

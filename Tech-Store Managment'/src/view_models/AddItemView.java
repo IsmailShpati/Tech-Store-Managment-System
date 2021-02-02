@@ -25,7 +25,7 @@ public class AddItemView extends BorderPane{
 	//private ObservableList<String> categories = FXCollections.observableArrayList(CategorieController.getCategories());
 	private Label[] nameLabels = {
 		new Label("Name"),
-		new Label("Model"),
+		new Label("Brand"),
 		new Label("Purchasing Price"),
 		new Label("Selling Price"),
 		new Label("Category")
@@ -35,8 +35,8 @@ public class AddItemView extends BorderPane{
 	private TextField[] fields = {
 		new TextField(),
 		new TextField(),
-		new TextField(),
-		new TextField()
+		new NumberField(),
+		new NumberField()
 	};
 	
 	private ComboBox<String> categorySelector = new ComboBox<>(); 
@@ -104,12 +104,8 @@ public class AddItemView extends BorderPane{
 		if(model.length() < 1)
 			throw new ViewException("Please fill the model field", AlertType.ERROR);
 		
-		try {
-			sellingPrice = Double.parseDouble(fields[2].getText());
-			purchasingPrice = Double.parseDouble(fields[3].getText());
-		}catch(NumberFormatException e) {
-			throw new ViewException("Please enter only numbers in price fields", AlertType.ERROR);
-		}
+		purchasingPrice = ((NumberField)fields[2]).getValue();
+		sellingPrice = ((NumberField)fields[3]).getValue();
 		if(categorySelector.getValue() == null) {
 			throw new ViewException("Please add a category", AlertType.ERROR);
 		}

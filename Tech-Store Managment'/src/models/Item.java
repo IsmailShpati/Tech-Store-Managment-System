@@ -21,10 +21,15 @@ public abstract class Item implements Serializable {
 	
 	public String getItemName() { return itemName; }
 	public String getItemModel() { return itemModel; }
-	public double getSellingPrice() { return sellingPrice; }
+	public String getSellingPrice() { return sellingPrice+""; }
+	public double getsellingPrice() { return sellingPrice; }
 	
 	public void setItemName(String itemName) { this.itemName = itemName; }
 	public void setItemModel(String itemModel) { this.itemModel = itemModel; } 
 	public void setSellingPrice(double sellingPrice) { this.sellingPrice = sellingPrice; }
+	
+	public String toString() {
+		return itemName;
+	}
 	
 }

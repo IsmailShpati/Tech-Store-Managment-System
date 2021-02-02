@@ -16,7 +16,7 @@ public class BillItem extends Item implements Comparable<BillItem>{
 	
 	//For deep copying
 	public BillItem(BillItem i) {
-		this(i.getItemName(), i.getSellingPrice(), i.getQuantity());
+		this(i.getItemName(), i.getsellingPrice(), i.getQuantity());
 	}
 	
 	public BillItem(String itemName, double sellingPrice, int quantity) {
@@ -35,14 +35,13 @@ public class BillItem extends Item implements Comparable<BillItem>{
 	
 	public boolean equals(BillItem i) {
 		if(getItemName().equals(i.getItemName()))
-			if(getSellingPrice() == i.getSellingPrice())
 				return true;
 		return false;
 	}
 	
 	
 	public double getTotalBillPrice() {
-		return quantity * getSellingPrice();
+		return quantity * getsellingPrice();
 	}
 
 
