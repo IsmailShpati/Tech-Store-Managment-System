@@ -20,7 +20,7 @@ import view_models.AddItemView;
 import view_models.AddNewCategory;
 import view_models.PurchaseStock;
 import view_models.SideMenu;
-import view_models.CashierStatistics;
+import view_models.ManagerStatistics;
 import view_models.SuppliersView;
 
 public class ManagerView implements Viewable {
@@ -56,7 +56,7 @@ public class ManagerView implements Viewable {
 			menu = new SideMenu(stage, manager);
 			menu.addButton(this, "Stock Managment");
 			menu.addButton(new SuppliersView(), "Suppliers");
-			menu.addButton(new CashierStatistics(), "CashierStatistics");
+			menu.addButton(new ManagerStatistics(manager), "Statistics");
 			initMenus();
 			VBox container = new VBox();
 			container.getChildren().addAll(stockView, menuBar);
@@ -97,11 +97,6 @@ public class ManagerView implements Viewable {
 					stockView.delete();	
 			});
 			
-//			Label suppliersLabel = new Label("Suppliers");
-//			suppliersLabel.setOnMouseClicked(e->{
-//				menu.changeRightSide(new SuppliersView(ManagerView.this));
-//			});
-			
 			Label purchaseLabel = new Label("Purchase");
 			purchaseLabel.setOnMouseClicked(e->{
 				stockView.purchaseItem();
@@ -120,10 +115,9 @@ public class ManagerView implements Viewable {
 			
 			newMenu.getItems().addAll(newItem, newCategory);
 			Menu deleteMenu = new Menu("", deleteLabel);
-	//		Menu suppliersMenu = new Menu("", suppliersLabel);
 			Menu purchaseMenu = new Menu("", purchaseLabel);
 			menuBar.getMenus().addAll(newMenu, purchaseMenu, deleteMenu);
-			//setBottom(menuBar);
+		//	System.out.println(getCenter().getBoundsInParent().getWidth());
 		}
 	}
 

@@ -37,7 +37,7 @@ public class PurchasePopUp extends Application {
 			StockController.purchaseStock(item, quantity.getQuantity());
 			Manager m = stockView.getManager();
 			stockView.refresh();
-			m.addPurchase(new PurchaseBill(item.getItemName(), m.getName()+ " " + m.getSurname(),
+			m.addBill(new PurchaseBill(item.getItemName(), m.getName()+ " " + m.getSurname(),
 					quantity.getQuantity(), item.getpurchasingPrice()));
 			stage.close();
 			new Alert(AlertType.CONFIRMATION).show();

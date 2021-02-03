@@ -1,10 +1,11 @@
 package models;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class PurchaseBill implements Serializable {
+import interfaces.StatisticBill;
+
+public class PurchaseBill implements Serializable, StatisticBill {
 
 	private static final long serialVersionUID = 7116010254554672250L;
 	
@@ -22,8 +23,13 @@ public class PurchaseBill implements Serializable {
 		this.price = price;
 	}
 
-	public LocalDateTime getPurchaseDate() {
+	@Override
+	public LocalDateTime getDate() {
 		return purchaseDate;
+	}
+	
+	public String getPurchaseDate() {
+		return purchaseDate.toString();
 	}
 
 	public String getItemName() {
@@ -34,15 +40,23 @@ public class PurchaseBill implements Serializable {
 		return managerName;
 	}
 
-	public int getQuantityPurchased() {
+	public int getQuantity() {
 		return quantityPurchased;
 	}
+	
+	public String getQuantityPurchased() {
+		return quantityPurchased+"";
+	}
 
-	public double getPrice() {
+	public String getPrice() {
+		return price+"";
+	}
+	
+	public double getprice() {
 		return price;
 	}
 	
-	
-	public double getBillPrice() { return price*quantityPurchased; }
+	@Override
+	public double getTotal() { return price*quantityPurchased; }
 	
 }

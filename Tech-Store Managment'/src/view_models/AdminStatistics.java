@@ -2,7 +2,6 @@ package view_models;
 
 import java.time.LocalDate;
 
-
 import controllers.UserController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import models.Bill;
 import models.Cashier;
 import models.Manager;
 import models.User;
@@ -25,7 +23,6 @@ public class AdminStatistics extends BorderPane {
 	
 	public AdminStatistics() {
 		setPadding(new Insets(30));
-		
 		setRight(chart);
 		initSelectors();
 	}
@@ -34,15 +31,14 @@ public class AdminStatistics extends BorderPane {
 	private double getTotalRevenue(LocalDate from, LocalDate to) {
 		double revenue = 0;
 		for(Cashier c : UserController.getCashiers())
-			for(Bill b : c.getBillsInPeriod(from, to))
-				revenue += b.getTotalBillPrice();
+			revenue += c.getTotal(from, to);
 		return revenue;
 	}
 	
 	public static double getPurchaseExpenses(LocalDate from, LocalDate to) {
 		double expenses = 0;
 		for(Manager m : UserController.getManagers())
-			expenses += m.getTotalPurchasesDate(from, to);
+			expenses += m.getTotal(from, to);
 		return expenses;
 	}
 	

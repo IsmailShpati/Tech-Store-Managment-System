@@ -34,7 +34,6 @@ public class ItemsView extends BorderPane {
 	private HBox bottom = new HBox(30);
 	private int selectedRow = 0;
 	private GridPane itemsShow = new GridPane();
-	private double totalPrice; 
 	private Bill bill = new Bill();
 	
 	public ItemsView() {
@@ -64,8 +63,6 @@ public class ItemsView extends BorderPane {
 		table.setItems(items);
 		table.setPrefWidth(400);
 		table.setOnMouseClicked(e -> {	
-			System.out.println("selected");
-			
 			selectedRow = table.getSelectionModel().getSelectedIndex();
 			if( selectedRow > -1)
 			   setBottom(bottom);
@@ -89,35 +86,29 @@ public class ItemsView extends BorderPane {
 				item.setQuantity(item.getQuantity() + quantity);
 				contains = true;
 			}
-		if(!contains) {
-			System.out.println("Doesn't contin");
-			BillItem b = new BillItem(itemName, price, quantity);
-			items.add(b);
-			bill.addBillItem(b);
-		}
-			
+			if(!contains) {
+				System.out.println("Doesn't contin");
+				BillItem b = new BillItem(itemName, price, quantity);
+				items.add(b);
+				bill.addBillItem(b);
+			}
 		}
 	}
 	
 	public void editSelected(String name, int quantity) throws ViewException{
-	     //if name is changed find the item with corresponding name
 		if( selectedRow < items.size()) {
 			BillItem b = StockController.getItem(name, quantity, items.get(selectedRow).getQuantity());
-			System.out.println(b.getItemName() + " " + b.getSellingPrice() + " " + b.getQuantity());
 			items.set(selectedRow, b);
 			bill.editItem(selectedRow, b);
 			addItemView.changeTotalPrice(b.getQuantity() * b.getsellingPrice());
 		}
-			else {
-				throw new ViewException( "No item with that name exists", AlertType.ERROR);
-		}
+		else 
+			throw new ViewException( "No item with that name exists", AlertType.ERROR);
 	}
-	
 	
 	private void setBottom() {		
 		Button deselect = new Button("Cancel");
 		deselect.setOnAction(E -> {
-		      
 		      setBottom(null);
 		      table.getSelectionModel().select(null);
 		});
@@ -143,10 +134,6 @@ public class ItemsView extends BorderPane {
 		bottom.getChildren().addAll(deselect, edit, delete);
 		//setBottom(bottom);
 	}
-	
-//	public double getTotalPrice() {
-//		return totalPrice;
-//	}
 	
 	public void clearItems() {
 		bill = new Bill();

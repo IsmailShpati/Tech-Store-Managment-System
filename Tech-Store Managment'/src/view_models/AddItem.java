@@ -1,14 +1,13 @@
 package view_models;
 
 import controllers.StockController;
+import controllers.UserController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import models.BillItem;
 import models.StockItem;
@@ -55,13 +54,18 @@ public class AddItem extends GridPane {
 	private void initAddBtn() {
 		Button addItem = new Button("ADD ITEM");
 		addItem.setOnAction(E -> {
-			StockItem i = items.getValue();
-			BillItem b = new BillItem(i.getItemName(), i.getsellingPrice(), quantity.getQuantity());
-			itemsView.addItem(b);
-			quantity.reset();
-			items.setValue(StockController.getItems().get(0));
-			changeTotalPrice(b.getQuantity()*b.getsellingPrice());
-		});
+			try {
+				StockItem i = items.getValue();
+				BillItem b = new BillItem(i.getItemName(), i.getsellingPrice(), quantity.getQuantity());
+				StockController.checkQuantity(i, quantity.getQuantity());
+				itemsView.addItem(b);
+				quantity.reset();
+				items.setValue(StockController.getItems().get(0));
+				changeTotalPrice(b.getQuantity()*b.getsellingPrice());
+			}catch(ViewException e) {
+				e.showAlert();
+			}
+			});
 		add(addItem, startingColumn+1, startingRow++);
 	}
 	

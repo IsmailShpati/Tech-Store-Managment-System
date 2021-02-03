@@ -21,7 +21,6 @@ import javafx.scene.layout.GridPane;
 import models.Administrator;
 import models.Cashier;
 import models.Manager;
-import models.PermissionLevel;
 import views.AdministratorView.AdministratorPannel;
 
 public class AddUserView extends BorderPane {
@@ -138,15 +137,15 @@ public class AddUserView extends BorderPane {
 		switch(permission) {
 		case 0:
 			UserController.addUser(new Cashier(username, password,
-					name, surname, PermissionLevel.CASHIER, salary, date.getValue(), phoneNumber));
+					name, surname, salary, date.getValue(), phoneNumber));
 			break;
 		case 1:
 			UserController.addUser(new Manager(username, password,
-					name, surname, PermissionLevel.MANAGER, salary, date.getValue(), phoneNumber));
+					name, surname,salary, date.getValue(), phoneNumber));
 			break;
 		case 2:
 			UserController.addUser(new Administrator(username, password,
-					name, surname, PermissionLevel.ADMINISTRATOR, salary, date.getValue(), phoneNumber));
+					name, surname, salary, date.getValue(), phoneNumber));
 			break;
 		}
 	}

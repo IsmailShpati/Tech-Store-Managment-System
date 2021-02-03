@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import models.Bill;
 import models.Cashier;
 import view_models.AddItem;
+import view_models.BillsView;
 import view_models.ItemsView;
 import view_models.SideMenu;
 
@@ -56,11 +57,13 @@ public class CashierView  implements Viewable{
 		private ItemsView leftSide = new ItemsView();
 		private AddItem rightSide = new AddItem(leftSide);
 	    private SideMenu menu ;
+	    private BillsView billsView;
 	    
 	    				
 		public CashierPannel( Stage stage) {
 			menu = new SideMenu(stage, cashier);
 			setLeft(leftSide);
+			billsView = new BillsView(cashier);
 			leftSide.setAddItemView(rightSide);
 			setRight(rightSide);
 			initBottom();
@@ -69,6 +72,7 @@ public class CashierView  implements Viewable{
 
 		private void initSideMenu() {
 			menu.addButton(this, "Scan items");
+			menu.addButton(billsView, "Bills");
 		}
 		
 		private void initBottom() {
@@ -78,6 +82,7 @@ public class CashierView  implements Viewable{
 					Bill b = leftSide.getBill();
 					cashier.addBill(b);
 					BillGenerator.printBill(b, cashier);
+					billsView.refresh();
 					leftSide.clearItems();
 					rightSide.resetTotalPrice();
 					new Alert(AlertType.CONFIRMATION, 

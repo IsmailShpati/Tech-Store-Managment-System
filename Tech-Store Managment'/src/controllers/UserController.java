@@ -6,12 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.util.ArrayList;
 
 import interfaces.ViewException;
 import javafx.scene.control.Alert.AlertType;
-import models.Administrator;
+//import models.Administrator;
 import models.Cashier;
 import models.Manager;
 import models.PermissionLevel;
@@ -22,7 +22,9 @@ public class UserController {
 
 	private static ArrayList<User> users = new ArrayList<>();
 	private static final File db = new File("databases/UserDB.dat");
-	
+	public static void main(String[] args) throws ViewException {
+		UserController.exists("");
+	}
 	static {
 		//Read from the database all users
 		try {
@@ -34,6 +36,15 @@ public class UserController {
 		} catch (ClassNotFoundException e) {
 			System.err.println("[UserController]Class not found");
 		}
+		
+//		users.add(new Administrator("admin", "1234", "Ismail", "Shpati",
+//				 230, LocalDate.of(2001, 5, 25), "0666"));
+//		users.add(new Cashier("cashier", "1234", "Ismail", "Shpati",
+//		 230, LocalDate.of(2001, 5, 25), "0666"));
+//		users.add(new Manager("manager", "1234", "Ismail", "Shpati",
+//				 230, LocalDate.of(2001, 5, 25), "0666"));
+//		save();
+	
 	}
 	
 	public static User logIn(String username, String password) throws ViewException{
@@ -68,25 +79,7 @@ public class UserController {
 		return false;
 	}
 
-	public static void removeCashier(User u) {
-		for(User user : users) {
-			try {
-				if(equals(u, user)){
-					users.remove(user);
-					save();
-				}
-			} catch (ViewException e) {
-				e.showAlert();
-			}
-		}
-	}
-	
 	public static void removeUser(User u) {
-		if(u.getPermission() == PermissionLevel.CASHIER)
-			((Cashier)u).deleteFile();
-		else if(u.getPermission() == PermissionLevel.MANAGER)
-			((Manager)u).deleteFile();
-		
 		users.remove(u);
 		save();
 	}

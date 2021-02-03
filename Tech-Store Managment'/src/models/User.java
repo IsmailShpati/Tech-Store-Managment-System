@@ -3,7 +3,6 @@ package models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import controllers.UserController;
 
 public abstract class User implements Serializable {
 

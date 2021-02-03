@@ -18,14 +18,13 @@ public class StockController {
 	private static ArrayList<StockItem> itemsAvaible = new ArrayList<>();
 	private static final File path = new File("databases/Stock Database/Stock.dat");
 	
-	public static void main(String[] args) {
-		for(StockItem i : itemsAvaible) {
-			System.out.println(i.getItemName() + " " + i.getCategory());
-		}
-	}
+//	public static void main(String[] args) {
+//		for(StockItem i : itemsAvaible) {
+//			System.out.println(i.getItemName() + " " + i.getCategory());
+//		}
+//	}
 	
 	static {
-		//TODO construct object here
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream(path));
 				itemsAvaible = (ArrayList<StockItem>)in.readObject();
@@ -36,9 +35,6 @@ public class StockController {
 			e.printStackTrace();
 		} 
 		
-		
-//		itemsAvaible.add(new StockItem("Shoe", "IDK", 45.5, 
-//				CategorieController.reset(), 4, 42));
 	}
 	
 	public static ArrayList<StockItem> getItems(){
@@ -127,6 +123,17 @@ public class StockController {
 		throw new ViewException("No item with that name exists.", AlertType.ERROR);
 	}
 
+	public static void checkQuantity(StockItem i, int quantity) throws ViewException{
+		if(i.getQuantity() >= quantity) {
+			i.sellStock(quantity);
+			save();
+		}
+		else
+			throw new ViewException("Not enough stock left for that item, only " 
+				+ i.getStockQuantity() +" items left in stock", 
+				AlertType.ERROR);
+	}
+	
 	public static void delete(StockItem i) {
 		itemsAvaible.remove(i);
 		save();
