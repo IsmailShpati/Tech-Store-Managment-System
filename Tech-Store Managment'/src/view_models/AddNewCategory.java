@@ -3,6 +3,7 @@ package view_models;
 import java.util.Optional;
 
 import controllers.CategorieController;
+import interfaces.Returnable;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,11 +23,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import views.ManagerView;
-
 public class AddNewCategory extends VBox{
 
-	private ManagerView main;
+	private Returnable main;
 	private TextField categoryField;
 	private ListView<String> listView = new ListView<>();
 	private ObservableList<String> categories = 
@@ -34,7 +33,7 @@ public class AddNewCategory extends VBox{
 	private MenuBar menuBar = new MenuBar();
 	
 	
-	public AddNewCategory(ManagerView main) {
+	public AddNewCategory(Returnable main) {
 		this.main = main;
 		setAlignment(Pos.CENTER);
 		setPrefWidth(650);

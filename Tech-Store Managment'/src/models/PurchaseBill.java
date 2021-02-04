@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import interfaces.StatisticBill;
 
-public class PurchaseBill implements Serializable, StatisticBill {
+public class PurchaseBill implements Serializable, StatisticBill, Comparable<PurchaseBill> {
 
 	private static final long serialVersionUID = 7116010254554672250L;
 	
@@ -21,6 +21,14 @@ public class PurchaseBill implements Serializable, StatisticBill {
 		this.managerName = managerName;
 		this.quantityPurchased = quantityPurchased;
 		this.price = price;
+	}
+	
+	public PurchaseBill(PurchaseBill p) {
+		itemName = p.getItemName();
+		managerName = p.getManagerName();
+		quantityPurchased = p.getQuantity();
+		price = p.getprice();
+		purchaseDate = p.getDate();
 	}
 
 	@Override
@@ -47,6 +55,10 @@ public class PurchaseBill implements Serializable, StatisticBill {
 	public String getQuantityPurchased() {
 		return quantityPurchased+"";
 	}
+	
+	public void addQuantityPurchased(int quantity) {
+		this.quantityPurchased += quantity;
+	}
 
 	public String getPrice() {
 		return price+"";
@@ -56,7 +68,16 @@ public class PurchaseBill implements Serializable, StatisticBill {
 		return price;
 	}
 	
+	public boolean equals(PurchaseBill p) {
+		return getItemName().equals(p.getItemName());
+	}
+	
 	@Override
 	public double getTotal() { return price*quantityPurchased; }
+
+	@Override
+	public int compareTo(PurchaseBill b) {
+		return getItemName().compareTo(b.getItemName());
+	}
 	
 }

@@ -16,6 +16,8 @@ import models.Administrator;
 import view_models.AddUserView;
 import view_models.AdminStatistics;
 import view_models.SideMenu;
+import view_models.StockAdmin;
+import view_models.UserStatistics;
 import view_models.UsersView;
 
 public class AdministratorView implements Viewable{
@@ -62,6 +64,9 @@ public class AdministratorView implements Viewable{
 			menu = new SideMenu(stage, user);
 			menu.addButton(this, "Add user");
 			menu.addButton(new AdminStatistics(), "Income");
+			menu.addButton(new UserStatistics(), 
+					"Employee Statistics");
+			menu.addButton(new StockAdmin(menu), "Stock");
 		}
 		
 		public void setView() {

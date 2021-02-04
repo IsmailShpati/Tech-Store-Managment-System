@@ -50,7 +50,6 @@ public class SideMenu extends HBox {
 		sideMenu.addButton(pane, btnText);
 	}
 	
-	
 	//Inner class
 	class SidePannel extends BorderPane{
 		private VBox body = new VBox();
@@ -67,6 +66,7 @@ public class SideMenu extends HBox {
 			logOut.setId("logOutBtn");
 			addHead();
 			setBottom(logOut);
+			setMargin(logOut, new Insets(70, 0, 10, 0));
 			setCenter(body);
 			logOut.setOnAction(e->{
 				System.out.println("LogginOut");	
@@ -74,7 +74,6 @@ public class SideMenu extends HBox {
 				Optional<ButtonType> butons = alert.showAndWait();
 				if(butons.get() == ButtonType.YES)
 					new LogIn().setView(stage);
-					
 			});
 		}
 		
@@ -95,7 +94,6 @@ public class SideMenu extends HBox {
 				changeRightSide(pane);
 			 }
 			});
-			
 		}
 		
 		private void addHead() {
@@ -126,7 +124,7 @@ public class SideMenu extends HBox {
 			label.setTextFill(Color.WHITE);
 			rect.getChildren().addAll(pic, label);
 			setTop(rect);
-			setMargin(rect, new Insets(10, 0, 20, 0));
+			setMargin(rect, new Insets(10, 0, 70, 0));
 		}
 		
 	}

@@ -76,7 +76,6 @@ public class BillGenerator {
 		header.append(b.getDate().getYear()+ "-" +fill(b.getDate().getMonthValue())+"-"+ fill(b.getDate().getDayOfMonth()) 
 				+" " +fill( b.getDate().getHour()) + ":" + fill(b.getDate().getMinute())+"\n");
 		header.append("Cashier: " + cashier + "\n");
-		header.append("Bill no: " + billNO + "\n");
 		header.append(repeat('=', BILL_WIDTH) + "\n\n");
 		
 		return header.toString();

@@ -13,23 +13,23 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import models.Manager;
 import models.StockItem;
 
-public class PurchaseStock extends BorderPane {
+public class PurchaseStock {
 
 	private Manager manager;
 	private StockView leftSide = new StockView();
 	
 	
 	public PurchaseStock(Manager manager) {
-		setCenter(leftSide);
 		this.manager = manager;
 	}
 	
+	public PurchaseStock() { }
 	
+	public TableView<StockItem> getStockView() { return leftSide;}
 	
 	public void purchaseItem() {
 			try {
@@ -50,11 +50,6 @@ public class PurchaseStock extends BorderPane {
 	public void refresh() {
 		leftSide.refresh();
 	}
-	
-
-	
-
-	
 	
 	 public class StockView extends TableView<StockItem>{
 		
@@ -96,8 +91,6 @@ public class PurchaseStock extends BorderPane {
 		
 		@SuppressWarnings("unchecked")
 		private void initTable() {
-			//double sellingPrice,
-			//String category
 			setEditable(true);
 			TableColumn<StockItem, String> nameColumn = new TableColumn<>("Item name");
 			nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -163,20 +156,11 @@ public class PurchaseStock extends BorderPane {
 			setPrefHeight(580);
 			setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			setItems(items);
-			
 		}
 		
 		public void refresh() {
 			items.setAll(StockController.getItems());
 		}
-		
-
-		
-		
 	}
 
-
-
-
-	
 }

@@ -26,7 +26,7 @@ public class SupplierController {
 			suppliers = (ArrayList<Supplier>)in.readObject();
 			in.close();
 		}  catch (Exception e) {
-			System.err.println("[CategorieController]Reading problem\n" + e.getMessage());
+			System.err.println("[SupplierController]File empty\n" + e.getMessage());
 			
 		}
 		

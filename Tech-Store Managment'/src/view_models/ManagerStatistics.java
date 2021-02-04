@@ -1,12 +1,10 @@
 package view_models;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.TextAlignment;
 import models.Manager;
 
 public class ManagerStatistics extends BorderPane {
@@ -28,7 +26,7 @@ public class ManagerStatistics extends BorderPane {
 			setCenter(cashierStats);
 		});
 	
-		Label purchases = new Label("Purchases");
+		Label purchases = new Label("My Purchases");
 		purchases.setOnMouseClicked(e->{
 			purchasesStats = new PurchasesView(manager);
 			setCenter(purchasesStats);
@@ -42,9 +40,5 @@ public class ManagerStatistics extends BorderPane {
 		setCenter(cashierStats);
 		setBottom(menuBar);
 	}
-	
-	
-	
-	
 
 }

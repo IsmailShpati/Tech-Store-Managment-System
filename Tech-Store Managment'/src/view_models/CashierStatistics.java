@@ -222,9 +222,7 @@ public class CashierStatistics extends BorderPane {
 	private static ArrayList<BillItem> removeDuplicates(ArrayList<BillItem> items){
 		Collections.sort(items);
 		ArrayList<BillItem> updatedItems = new ArrayList<>();
-		for(BillItem current : updatedItems)
-			System.out.println("Current "+current.getItemName() + " " + current.getQuantity());
-
+	
 		if(items.size() > 0) {
 			BillItem current = new BillItem(items.get(0));
 

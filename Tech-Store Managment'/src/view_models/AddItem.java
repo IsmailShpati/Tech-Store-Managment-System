@@ -1,7 +1,6 @@
 package view_models;
 
 import controllers.StockController;
-import controllers.UserController;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;

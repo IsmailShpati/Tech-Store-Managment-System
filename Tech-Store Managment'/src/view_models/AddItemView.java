@@ -2,6 +2,7 @@ package view_models;
 
 import controllers.CategorieController;
 import controllers.StockController;
+import interfaces.Returnable;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -15,11 +16,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import models.StockItem;
-import views.ManagerView;
 
 public class AddItemView extends BorderPane{
 	
-	private ManagerView mainView;
+	private Returnable mainView;
 	private int startingColumn = 0, startingRow = 0;
 	private GridPane body = new GridPane();
 	//private ObservableList<String> categories = FXCollections.observableArrayList(CategorieController.getCategories());
@@ -42,7 +42,7 @@ public class AddItemView extends BorderPane{
 	private ComboBox<String> categorySelector = new ComboBox<>(); 
 	
 	
-	public AddItemView(ManagerView mainView) {
+	public AddItemView(Returnable mainView) {
 		this.mainView = mainView;
 		setPrefWidth(600);
 		initPane();

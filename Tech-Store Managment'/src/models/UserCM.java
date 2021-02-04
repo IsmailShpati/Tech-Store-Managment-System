@@ -35,6 +35,15 @@ public abstract class UserCM<T extends StatisticBill> extends User {
 		
 		return billsInPeriod;
 	}
+	
+	public ArrayList<T> getBillInDate(LocalDate date){
+		ArrayList<T> billsInDate = new ArrayList<>();
+		for(T b : bills) 
+			if(date.compareTo(b.getDate().toLocalDate()) == 0)
+				billsInDate.add(b);
+		
+		return billsInDate;
+	}
 
 	
 	public double getTotal(LocalDate start, LocalDate end) {

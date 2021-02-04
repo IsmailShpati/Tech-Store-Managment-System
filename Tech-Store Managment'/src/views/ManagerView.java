@@ -3,6 +3,7 @@ package views;
 import java.util.Optional;
 
 import controllers.StockController;
+import interfaces.Returnable;
 import interfaces.Viewable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -23,10 +24,11 @@ import view_models.SideMenu;
 import view_models.ManagerStatistics;
 import view_models.SuppliersView;
 
-public class ManagerView implements Viewable {
+public class ManagerView implements Viewable, Returnable {
 	
 	private ManagerPannel pannel;
 	private Manager manager;
+	private SideMenu menu;
 	
 	public ManagerView(Manager manager) {
 		this.manager = manager;
@@ -44,9 +46,7 @@ public class ManagerView implements Viewable {
 	}
 	
 	
-	class ManagerPannel extends BorderPane{
-		private SideMenu menu;
-		//private VBox btnContainer = new VBox(30); 
+	public class ManagerPannel extends BorderPane implements Returnable{
 		private Stage stage;
 		private MenuBar menuBar = new MenuBar();
 		private PurchaseStock stockView = new PurchaseStock(manager);
@@ -55,14 +55,38 @@ public class ManagerView implements Viewable {
 			this.stage = stage;
 			menu = new SideMenu(stage, manager);
 			menu.addButton(this, "Stock Managment");
-			menu.addButton(new SuppliersView(), "Suppliers");
+			menu.addButton(new SuppliersView(menu), "Suppliers");
 			menu.addButton(new ManagerStatistics(manager), "Statistics");
 			initMenus();
 			VBox container = new VBox();
-			container.getChildren().addAll(stockView, menuBar);
+			container.getChildren().addAll(stockView.getStockView(), menuBar);
 			setCenter(container);
+		}
+		
+		public ManagerPannel() {
+			initMenusForAdmin();
+			setCenter(stockView.getStockView());
+			setBottom(menuBar);
+		}
+		private void initMenusForAdmin() {
+			Label deleteLabel = new Label("Delete");
+			deleteLabel.setOnMouseClicked(e -> {
+					stockView.delete();	
+			});
 			
+			MenuItem newItem = new MenuItem("Item");
+			newItem.setOnAction(e -> {
+				menu.changeRightSide(new AddItemView(ManagerView.this));
+			});
+			MenuItem newCategory = new MenuItem("Category");
+			newCategory.setOnAction(e -> {
+				menu.changeRightSide(new AddNewCategory(ManagerView.this));
+			});
 			
+			Menu newMenu = new Menu("New");
+			
+			newMenu.getItems().addAll(newItem, newCategory);
+			menuBar.getMenus().addAll(newMenu, new Menu("", deleteLabel));
 		}
 		
 		public void returnBack() {

@@ -18,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import models.Administrator;
 import models.Cashier;
 import models.Manager;
 import views.AdministratorView.AdministratorPannel;
@@ -61,7 +60,7 @@ public class AddUserView extends BorderPane {
 	
 	private void initFields() {
 		permissionLevel.setItems(
-				FXCollections.observableArrayList("Cashier", "Manager", "Admin"));
+				FXCollections.observableArrayList("Cashier", "Manager"));
 		permissionLevel.setValue("Cashier");
 		permissionLevel.setOnAction(e -> {
 			addUser.setText("Add "+ permissionLevel.getValue());
@@ -142,10 +141,6 @@ public class AddUserView extends BorderPane {
 		case 1:
 			UserController.addUser(new Manager(username, password,
 					name, surname,salary, date.getValue(), phoneNumber));
-			break;
-		case 2:
-			UserController.addUser(new Administrator(username, password,
-					name, surname, salary, date.getValue(), phoneNumber));
 			break;
 		}
 	}
