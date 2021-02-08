@@ -7,6 +7,7 @@ import interfaces.Returnable;
 import interfaces.ViewException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -19,11 +20,12 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-public class AddNewCategory extends VBox{
+public class AddNewCategory extends BorderPane{
 
 	private Returnable main;
 	private TextField categoryField;
@@ -35,7 +37,6 @@ public class AddNewCategory extends VBox{
 	
 	public AddNewCategory(Returnable main) {
 		this.main = main;
-		setAlignment(Pos.CENTER);
 		setPrefWidth(650);
 		setPrefHeight(600);
 		//addGrid();
@@ -45,11 +46,15 @@ public class AddNewCategory extends VBox{
 	}
 	
 	private void initMenuBar() {
-		Label newLabel = new Label("New");
+		Label newLabel = new Label("New",
+				ImageGetter.getImage("Resources/buttons/add_white.png", 20, 20));
+
 		newLabel.setOnMouseClicked(e->{
 			newCategory();
 		});
-		Label deleteLabel = new Label("Delete");
+		Label deleteLabel = new Label("Delete",
+				ImageGetter.getImage("Resources/buttons/delete_white.png", 20, 20));
+
 		deleteLabel.setOnMouseClicked(e->{
 			try {
 				delete();
@@ -57,7 +62,9 @@ public class AddNewCategory extends VBox{
 				e1.showAlert();
 			}
 		});
-		Label backLabel = new Label("	Back");
+		Label backLabel = new Label("Back",
+				ImageGetter.getImage("Resources/buttons/back_white.png", 20, 20));
+
 		backLabel.setOnMouseClicked(e->{
 			main.returnBack();
 		});
@@ -87,8 +94,11 @@ public class AddNewCategory extends VBox{
 			
 		});
 		listView.setPrefHeight(550);
-		getChildren().addAll(title, listView, menuBar);
-		
+		//getChildren().addAll(title, listView, menuBar);
+		setTop(title);
+		setAlignment(title, Pos.CENTER);
+		setCenter(listView);
+		setBottom(menuBar);
 				
 	}
 	
@@ -99,6 +109,7 @@ public class AddNewCategory extends VBox{
 	private void newCategory() {
 		GridPane body = new GridPane();
 		Stage stage = new Stage();
+		body.setPadding(new Insets(30));
 		body.setHgap(20);
 		body.setVgap(10);
 		Label categoryLab = new Label("Category name ");
@@ -106,7 +117,8 @@ public class AddNewCategory extends VBox{
 		categoryField = new TextField();
 		body.add(categoryField, 1, 1);
 		body.setAlignment(Pos.CENTER);
-		Button addCategoryBtn = new Button("Add category");
+		Button addCategoryBtn = new Button("Add category",
+				ImageGetter.getImage("Resources/buttons/add.png", 20,20));
 		body.add(addCategoryBtn, 1, 2);
 		addCategoryBtn.setOnAction(e -> {
 			String cat = categoryField.getText();

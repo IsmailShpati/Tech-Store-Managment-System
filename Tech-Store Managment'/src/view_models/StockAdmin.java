@@ -18,7 +18,8 @@ public class StockAdmin extends BorderPane implements Returnable {
 		setBottom(menuBar);
 	}
 	private void initMenusForAdmin() {
-		Label deleteLabel = new Label("Delete");
+		Label deleteLabel = new Label("Delete",
+				ImageGetter.getImage("Resources/buttons/delete_white.png",20, 20));
 		deleteLabel.setOnMouseClicked(e -> {
 				stockView.delete();	
 		});
@@ -32,7 +33,9 @@ public class StockAdmin extends BorderPane implements Returnable {
 			menu.changeRightSide(new AddNewCategory(this));
 		});
 		
-		Menu newMenu = new Menu("New");
+		Menu newMenu = new Menu("New",
+				ImageGetter.getImage("Resources/buttons/add_white.png",20, 20));
+
 		
 		newMenu.getItems().addAll(newItem, newCategory);
 		menuBar.getMenus().addAll(newMenu, new Menu("", deleteLabel));

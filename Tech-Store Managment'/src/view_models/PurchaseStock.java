@@ -152,7 +152,8 @@ public class PurchaseStock {
 			
 			getColumns().addAll(nameColumn, modelColumn, quantityColumn, 
 					sellingPriceColumn, purchasingPriceColumn, categoryColumn);
-			setPrefWidth(600);
+			setPrefWidth(700);
+			//System.out.println(getParent().getScene().getWindow().getWidth());
 			setPrefHeight(580);
 			setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			setItems(items);

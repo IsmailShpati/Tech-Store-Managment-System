@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import models.Administrator;
 import view_models.AddUserView;
 import view_models.AdminStatistics;
+import view_models.ImageGetter;
 import view_models.SideMenu;
 import view_models.StockAdmin;
 import view_models.UserStatistics;
@@ -62,11 +63,17 @@ public class AdministratorView implements Viewable{
 		
 		private void initMenu() {
 			menu = new SideMenu(stage, user);
-			menu.addButton(this, "Add user");
-			menu.addButton(new AdminStatistics(), "Income");
-			menu.addButton(new UserStatistics(), 
-					"Employee Statistics");
-			menu.addButton(new StockAdmin(menu), "Stock");
+			menu.addButton(this, "Users",
+					ImageGetter.getImage("Resources/buttons/users.png", 32, 32));
+			menu.addButton(new AdminStatistics(), "Income",
+					ImageGetter.getImage("Resources/buttons/sales.png", 40, 40));
+
+			menu.addButton(new UserStatistics(), "Employee Statistics",
+					ImageGetter.getImage("Resources/buttons/barChart.png", 32, 32));
+
+			menu.addButton(new StockAdmin(menu), "Stock",
+					ImageGetter.getImage("Resources/buttons/stock.png", 38, 38));
+
 		}
 		
 		public void setView() {
@@ -75,12 +82,15 @@ public class AdministratorView implements Viewable{
 		}
 		
 		private void initMenuBar() {
-			Label newLabel = new Label("New");
+			Label newLabel = new Label("New",
+					ImageGetter.getImage("Resources/buttons/add_white.png", 20, 20));
 			newLabel.setOnMouseClicked(e -> {
 				menu.changeRightSide(addUser);
 			});
 			
-			Label deleteLabel = new Label("Delete");
+			Label deleteLabel = new Label("Delete",
+					ImageGetter.getImage("Resources/buttons/delete_white.png", 20, 20));
+
 			deleteLabel.setOnMouseClicked(e->{
 				usersView.delete();
 			});

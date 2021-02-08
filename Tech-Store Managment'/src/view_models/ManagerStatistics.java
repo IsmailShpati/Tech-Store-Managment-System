@@ -20,13 +20,16 @@ public class ManagerStatistics extends BorderPane {
 	}
 	
 	private void initMenuBar() {
-		Label sales = new Label("Sales");
+		Label sales = new Label("Sales",
+				ImageGetter.getImage("Resources/buttons/sales_white.png", 26, 26));
 		sales.setOnMouseClicked(e->{
 			cashierStats = new CashierStatistics();
 			setCenter(cashierStats);
 		});
 	
-		Label purchases = new Label("My Purchases");
+		Label purchases = new Label("My Purchases",
+				ImageGetter.getImage("Resources/buttons/expense_white.png", 26, 26));
+
 		purchases.setOnMouseClicked(e->{
 			purchasesStats = new PurchasesView(manager);
 			setCenter(purchasesStats);

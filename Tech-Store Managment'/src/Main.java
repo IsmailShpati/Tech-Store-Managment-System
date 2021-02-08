@@ -1,12 +1,9 @@
-package views;
-
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import views.LogIn;
 
-
-
-public class MainView extends Application{
+public class Main extends Application {
 
 	public static void main(String[] args) { launch(args); }
 	@Override

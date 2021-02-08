@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -49,6 +50,9 @@ public class SideMenu extends HBox {
 	public void addButton(Pane pane, String btnText) {
 		sideMenu.addButton(pane, btnText);
 	}
+	public void addButton(Pane pane, String btnText, ImageView imageView) {
+		sideMenu.addButton(pane, btnText, imageView);
+	}
 	
 	//Inner class
 	class SidePannel extends BorderPane{
@@ -62,7 +66,12 @@ public class SideMenu extends HBox {
 			setId("menuPannel");
 			//body.setPadding(new Insets(50, 0, 50, 0));
 			body.setAlignment(Pos.TOP_CENTER);
-			Button logOut = new Button("Log out");
+			
+			ImageView logOutGraphic = new ImageView(new Image("Resources/buttons/logout.png"));
+			logOutGraphic.setFitWidth(32);
+			logOutGraphic.setFitHeight(32);
+			Button logOut = new Button("Log out",
+				ImageGetter.getImage("Resources/buttons/logout.png", 32, 32));
 			logOut.setId("logOutBtn");
 			addHead();
 			setBottom(logOut);
@@ -79,6 +88,16 @@ public class SideMenu extends HBox {
 		
 		public void addButton(Pane pane, String btnText) {
 			Button btn = new Button(btnText);
+			initButton(btn, pane);
+		}
+		
+		public void addButton(Pane pane, String btnText, ImageView graphic) {
+			Button btn = new Button(btnText,graphic);
+			initButton(btn, pane);
+		}
+		
+		
+		private void initButton(Button btn, Pane pane) {
 			btn.setId("sideMenuBtn");
 			if(nrButtons == 0) {
 				selectedBtn = btn;

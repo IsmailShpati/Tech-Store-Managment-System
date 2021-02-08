@@ -29,7 +29,7 @@ public class AddUserView extends BorderPane {
 	private PasswordField passwordField = new PasswordField();
 	private ComboBox<String> permissionLevel = new ComboBox<>();
 	private DatePicker date = new DatePicker(LocalDate.now());
-	private Button addUser = new Button("Add cashier");
+	private Button addUser ;
 	private GridPane body = new GridPane();
 	private TextField[] fields = {
 		new TextField(), //username	
@@ -46,8 +46,11 @@ public class AddUserView extends BorderPane {
 		body.setAlignment(Pos.CENTER);
 		setPrefWidth(400);
 		setPadding(new Insets(20));
+		addUser = new Button("Add cashier",
+				ImageGetter.getImage("Resources/buttons/add.png", 24, 24));
 		setCenter(body);
-		Button backBtn = new Button("Back");
+		Button backBtn = new Button("Back",
+				ImageGetter.getImage("Resources/buttons/back.png", 20, 20));
 		backBtn.setOnAction(e-> { mainView.returnBack();  });
 		setBottom(backBtn);
 		setAlignment(backBtn, Pos.CENTER_LEFT);

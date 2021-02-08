@@ -17,6 +17,7 @@ import models.Bill;
 import models.Cashier;
 import view_models.AddItem;
 import view_models.BillsView;
+import view_models.ImageGetter;
 import view_models.ItemsView;
 import view_models.SideMenu;
 
@@ -71,12 +72,16 @@ public class CashierView  implements Viewable{
 		}
 
 		private void initSideMenu() {
-			menu.addButton(this, "Scan items");
-			menu.addButton(billsView, "Bills");
+			menu.addButton(this, "Scan items",  
+					ImageGetter.getImage("Resources/buttons/cashierScan.png", 32, 32));
+			menu.addButton(billsView, "Bills",
+					ImageGetter.getImage("Resources/buttons/bills.png", 32, 32));
+
 		}
 		
 		private void initBottom() {
-			Button printBtn = new Button("Print Bill");		
+			Button printBtn = new Button("Print Bill",
+				ImageGetter.getImage("Resources/buttons/print.png", 26, 26));		
 			printBtn.setOnAction(e -> {
 				if(!leftSide.isEmpty()) {
 					Bill b = leftSide.getBill();

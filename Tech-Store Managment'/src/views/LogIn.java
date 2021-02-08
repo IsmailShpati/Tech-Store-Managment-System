@@ -27,6 +27,7 @@ import models.Cashier;
 import models.Manager;
 import models.PermissionLevel;
 import models.User;
+import view_models.ImageGetter;
 
 public class LogIn implements Viewable {
 
@@ -79,7 +80,8 @@ public class LogIn implements Viewable {
 			});
 			body.add(usernameField, 1, 0);
 			body.add(passwordField, 1, 1);
-			Button button = new Button("Log in");
+			Button button = new Button("Log in", ImageGetter.
+					getImage("Resources/buttons/login.png", 26, 26));
 			body.add(button, 1, 2);
 			button.setOnAction(E -> {
 				logIn();

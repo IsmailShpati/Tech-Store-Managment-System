@@ -12,6 +12,11 @@
 
 .table-view{
 	-fx-background-color: transparent;
+	-fx-font-size: 18;
+}
+
+.table-view .table-cell{
+	-fx-font-size: 18;
 }
 .table-view:selected{
 	-fx-background-color: transparent;
@@ -20,13 +25,11 @@
 .table-row-cell:selected {
    -fx-background-color: gray; 
    -fx-text-background-color:  white;
-   
-       
 }
 #menuPannel{
 	-fx-border-width: 2px;
 	-fx-background-color: linear-gradient(to bottom right, #485461, #28313B);
-	-fx-min-width: 300px;
+	-fx-min-width: 302px;
 }
 
 #sideMenuBtn, #selectedMenuBtn, #logOutBtn{

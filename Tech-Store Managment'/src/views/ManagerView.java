@@ -14,11 +14,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import models.Manager;
 import view_models.AddItemView;
 import view_models.AddNewCategory;
+import view_models.ImageGetter;
 import view_models.PurchaseStock;
 import view_models.SideMenu;
 import view_models.ManagerStatistics;
@@ -54,13 +54,15 @@ public class ManagerView implements Viewable, Returnable {
 		public ManagerPannel(Stage stage) {
 			this.stage = stage;
 			menu = new SideMenu(stage, manager);
-			menu.addButton(this, "Stock Managment");
-			menu.addButton(new SuppliersView(menu), "Suppliers");
-			menu.addButton(new ManagerStatistics(manager), "Statistics");
+			menu.addButton(this, "Stock Managment",
+					ImageGetter.getImage("Resources/buttons/stock.png", 38, 38));
+			menu.addButton(new SuppliersView(menu), "Suppliers",
+					ImageGetter.getImage("Resources/buttons/users.png", 32, 32));
+			menu.addButton(new ManagerStatistics(manager), "Statistics",
+					ImageGetter.getImage("Resources/buttons/barChart.png", 32, 32));
 			initMenus();
-			VBox container = new VBox();
-			container.getChildren().addAll(stockView.getStockView(), menuBar);
-			setCenter(container);
+			setCenter(stockView.getStockView());
+			setBottom(menuBar);
 		}
 		
 		public ManagerPannel() {
@@ -69,7 +71,8 @@ public class ManagerView implements Viewable, Returnable {
 			setBottom(menuBar);
 		}
 		private void initMenusForAdmin() {
-			Label deleteLabel = new Label("Delete");
+			Label deleteLabel = new Label("Delete", 
+					ImageGetter.getImage("Resources/buttons/delete_white.png", 20, 20));
 			deleteLabel.setOnMouseClicked(e -> {
 					stockView.delete();	
 			});
@@ -83,8 +86,8 @@ public class ManagerView implements Viewable, Returnable {
 				menu.changeRightSide(new AddNewCategory(ManagerView.this));
 			});
 			
-			Menu newMenu = new Menu("New");
-			
+			Menu newMenu = new Menu("New",
+					ImageGetter.getImage("Resources/buttons/add_white.png", 20, 20));
 			newMenu.getItems().addAll(newItem, newCategory);
 			menuBar.getMenus().addAll(newMenu, new Menu("", deleteLabel));
 		}
@@ -116,12 +119,16 @@ public class ManagerView implements Viewable, Returnable {
 		}
 		
 		private void initMenus() {
-			Label deleteLabel = new Label("Delete");
+			Label deleteLabel = new Label("Delete", 
+					ImageGetter.getImage("Resources/buttons/delete_white.png", 20, 20));
+			
 			deleteLabel.setOnMouseClicked(e -> {
 					stockView.delete();	
 			});
 			
-			Label purchaseLabel = new Label("Purchase");
+			Label purchaseLabel = new Label("Purchase",
+					ImageGetter.getImage("Resources/buttons/purchase.png", 20, 20));
+
 			purchaseLabel.setOnMouseClicked(e->{
 				stockView.purchaseItem();
 			});
@@ -135,13 +142,12 @@ public class ManagerView implements Viewable, Returnable {
 				menu.changeRightSide(new AddNewCategory(ManagerView.this));
 			});
 			
-			Menu newMenu = new Menu("New");
-			
+			Menu newMenu = new Menu("New",
+					ImageGetter.getImage("Resources/buttons/add_white.png", 20, 20));
 			newMenu.getItems().addAll(newItem, newCategory);
 			Menu deleteMenu = new Menu("", deleteLabel);
 			Menu purchaseMenu = new Menu("", purchaseLabel);
 			menuBar.getMenus().addAll(newMenu, purchaseMenu, deleteMenu);
-		//	System.out.println(getCenter().getBoundsInParent().getWidth());
 		}
 	}
 

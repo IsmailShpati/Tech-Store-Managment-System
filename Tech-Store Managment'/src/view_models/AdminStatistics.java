@@ -3,10 +3,11 @@ package view_models;
 import java.time.LocalDate;
 
 import controllers.UserController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -54,21 +55,21 @@ public class AdminStatistics extends BorderPane {
 		from.setValue(LocalDate.now());
 		DatePicker to = new DatePicker();
 		to.setValue(LocalDate.now());
-		
+		from.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				initPie(from.getValue(), to.getValue());				
+			} });
+		to.setOnAction(e->{
+			initPie(from.getValue(), to.getValue());	
+		});
 		HBox cont1 = new HBox(15);
 		cont1.getChildren().addAll(new Label("From:"), from);
 		HBox cont2 = new HBox(30);
 		cont2.getChildren().addAll(new Label("To :"), to);
-		HBox cont3 = new HBox();
-		Button show = new Button("Show");
-		show.setOnAction(e-> {
-			initPie(from.getValue(), to.getValue());
-		});
-		cont3.setAlignment(Pos.CENTER_RIGHT);
-		cont3.getChildren().add(show);
 		initPie(from.getValue(), to.getValue());
 		selectors.setAlignment(Pos.CENTER);
-		selectors.getChildren().addAll(cont1, cont2, cont3);
+		selectors.getChildren().addAll(cont1, cont2);
 		setLeft(selectors);
 	}
 	

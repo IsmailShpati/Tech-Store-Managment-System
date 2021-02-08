@@ -109,8 +109,7 @@ public class ItemsView extends BorderPane {
 	private void setBottom() {		
 		Button deselect = new Button("Cancel");
 		deselect.setOnAction(E -> {
-		      setBottom(null);
-		      table.getSelectionModel().select(null);
+		      deselect();
 		});
 		bottom.setAlignment(Pos.CENTER);
 		Button edit = new Button("Edit");
@@ -129,10 +128,16 @@ public class ItemsView extends BorderPane {
 				addItemView.changeTotalPrice(-1*i.getTotalBillPrice());
 				StockController.purchaseStock(StockController.getItem(i.getItemName()), i.getQuantity());
 				items.remove(i);
+				deselect();
 			}
 		});
 		bottom.getChildren().addAll(deselect, edit, delete);
 		//setBottom(bottom);
+	}
+	
+	private void deselect() {
+		setBottom(null);
+	     table.getSelectionModel().select(null);
 	}
 	
 	public void clearItems() {

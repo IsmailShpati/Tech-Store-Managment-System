@@ -26,6 +26,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,7 +34,7 @@ import javafx.scene.text.Font;
 import models.StockItem;
 import models.Supplier;
 
-public class SuppliersView extends VBox {
+public class SuppliersView extends BorderPane {
 
 	
 	private TableView<Supplier> table = new TableView<>();
@@ -51,13 +52,15 @@ public class SuppliersView extends VBox {
 	}
 	
 	private void initMenuBar() {
-		Label newLabel = new Label("New");
+		Label newLabel = new Label("New",
+				ImageGetter.getImage("Resources/buttons/add_white.png", 20, 20));
 		newLabel.setOnMouseClicked(e->{
 			newSupplier = new AddSupplier();
 			menu.changeRightSide(newSupplier);
 			refresh();
 		});
-		Label deleteLabel = new Label("Delete");
+		Label deleteLabel = new Label("Delete", ImageGetter.
+				getImage("Resources/buttons/delete_white.png", 20, 20));
 		deleteLabel.setOnMouseClicked(e->{
 			try {
 				deleteSupplier();
@@ -67,7 +70,8 @@ public class SuppliersView extends VBox {
 			}
 		});
 		
-		Label showInformation = new Label("Info");
+		Label showInformation = new Label("Info", 
+				ImageGetter.getImage("Resources/buttons/info_white.png", 20, 20));
 		showInformation.setOnMouseClicked(e->{
 			Supplier sup = table.getSelectionModel().getSelectedItem();
 			if(sup != null) {
@@ -118,9 +122,11 @@ public class SuppliersView extends VBox {
 		table.setItems(suppliers);
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.getColumns().setAll(nameColumn, numberColumn);
-		
-		setAlignment(Pos.CENTER);
-		getChildren().addAll(title, table, menuBar);
+		setTop(title);
+		setAlignment(title, Pos.CENTER);
+		setCenter(table);
+		setBottom(menuBar);
+		//getChildren().addAll(title, table, menuBar);
 	}
 	
 	private void refresh() {
@@ -147,7 +153,8 @@ public class SuppliersView extends VBox {
 		
 		private void initAddButton() {
 			HBox div = new HBox();
-			Button addSupplier = new Button("Add supplier");
+			Button addSupplier = new Button("Add supplier",
+					ImageGetter.getImage("Resources/buttons/add.png", 20, 20));
 			addSupplier.setOnAction(e->{
 				try {
 					validate();
@@ -164,7 +171,9 @@ public class SuppliersView extends VBox {
 		}
 		
 		private void initBackBtn() {
-			Button back = new Button("Back");
+			Button back = new Button("Back", 
+					ImageGetter.getImage("Resources/buttons/back.png", 20, 20));
+			
 			back.setOnAction(e->{
 				returnBack();
 			});
@@ -184,14 +193,15 @@ public class SuppliersView extends VBox {
 			pane.setHgap(20);
 			pane.setPadding(new Insets(30));
 			pane.add(new Label("Name"), 0, 0);
-			Tooltip phoneTooltip = new Tooltip("Enter a valid Alabanian number\n ex. \"+355 followed by 9 digits");
+			Tooltip phoneTooltip = new Tooltip("Enter a valid Albanian number\n ex. \"+355 followed by 9 digits");
 			phoneField.setTooltip(phoneTooltip);
 			pane.add(new Label("Phone Number"), 0, 1);
 			pane.add(nameField, 1, 0);
 			pane.add(phoneField, 1, 1);
 			initItems();
 			pane.add(itemsAvaible, 1, 2);
-			Button addItem = new Button("Add item");
+			Button addItem = new Button("Add item",
+					ImageGetter.getImage("Resources/buttons/add.png", 20, 20));
 			addItem.setOnAction(e->{
 				if(!list.getItems().contains(itemsAvaible.getValue()))
 					list.getItems().add(itemsAvaible.getValue());
@@ -240,7 +250,9 @@ public class SuppliersView extends VBox {
 		private void initBackBtn() {
 			HBox div = new HBox();
 			div.setAlignment(Pos.BOTTOM_LEFT);
-			Button back = new Button("Back");
+			Button back = new Button("Back", 
+					ImageGetter.getImage("Resources/buttons/back.png", 20, 20));
+			
 			back.setOnAction(e->{
 				returnBack();
 			});
@@ -257,7 +269,8 @@ public class SuppliersView extends VBox {
 			initialInfo.add(new Label("Contact"), 1, 0);
 			initialInfo.add(new Label(supplier.getName()), 0, 1);
 			initialInfo.add(new Label(supplier.getPhoneNumber()), 1, 1);
-			Button copyBtn = new Button("Copy contact");
+			Button copyBtn = new Button("Copy contact",
+					ImageGetter.getImage("Resources/buttons/clipboardCopy.png", 20, 20));
 			copyBtn.setOnAction(E->{
 				Clipboard clipboard = Clipboard.getSystemClipboard();
 		        ClipboardContent content = new ClipboardContent();
