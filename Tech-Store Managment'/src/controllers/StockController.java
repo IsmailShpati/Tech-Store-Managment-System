@@ -79,21 +79,6 @@ public class StockController {
 			e.showAlert();
 		}
 	}
- 
-//	private static StockItem getItem(StockItem i) throws ViewException {
-//		for(StockItem s : itemsAvaible)
-//			if(s.equals(i)) {
-//			   if(s.getStockQuantity() >= i.getStockQuantity())
-//				   return s;
-//			   else {
-//				   throw new ViewException("Not enough stock left for that item, only " 
-//							+ i.getStockQuantity() +" items left in stock", 
-//										AlertType.ERROR);
-//			   }
-//			}
-//		throw new ViewException("No item with that name was found", AlertType.ERROR);
-//				
-//	}
 	
 	public static void save() {
 		try {

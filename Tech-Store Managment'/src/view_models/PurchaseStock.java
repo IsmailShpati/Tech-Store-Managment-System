@@ -26,9 +26,7 @@ public class PurchaseStock {
 	public PurchaseStock(Manager manager) {
 		this.manager = manager;
 	}
-	
 	public PurchaseStock() { }
-	
 	public TableView<StockItem> getStockView() { return leftSide;}
 	
 	public void purchaseItem() {
@@ -152,7 +150,7 @@ public class PurchaseStock {
 			
 			getColumns().addAll(nameColumn, modelColumn, quantityColumn, 
 					sellingPriceColumn, purchasingPriceColumn, categoryColumn);
-			setPrefWidth(700);
+			setPrefWidth(850);
 			//System.out.println(getParent().getScene().getWindow().getWidth());
 			setPrefHeight(580);
 			setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

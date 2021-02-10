@@ -110,6 +110,8 @@ public class SuppliersView extends BorderPane {
 		//initSuppliers();
 		
 		Label title = new Label("Suppliers");
+		title.setId("title");
+		setMargin(title, new Insets(10, 0, 10, 0));
 		title.setFont(Font.font(20));
 		TableColumn<Supplier, String> nameColumn = new TableColumn<>("Name");
 		nameColumn.setCellValueFactory(
@@ -227,7 +229,8 @@ public class SuppliersView extends BorderPane {
 		private void validate() throws ViewException{
 			if(nameField.getText().length() < 1)
 				throw new ViewException("Please enter a name", AlertType.ERROR);
-			if(!phoneField.getText().replaceAll(" ", "").matches("^^(\\+355){1}\\d{9,}$$") )
+			
+			if(!phoneField.getText().replaceAll(" ", "").matches("^(\\+355){1}\\d{9,}$") )
 				throw new ViewException("Please enter a valid phone number", AlertType.ERROR);
 			if(list.getItems().size() < 1)
 				throw new ViewException("Add at least one item.", AlertType.ERROR);
@@ -263,13 +266,14 @@ public class SuppliersView extends BorderPane {
 
 		private void initGrid() {
 			initialInfo = new GridPane();
-			initialInfo.setHgap(20);
+			initialInfo.setAlignment(Pos.CENTER);
+			initialInfo.setHgap(10);
 			initialInfo.setVgap(10);
-			initialInfo.add(new Label("Name"), 0, 0);
-			initialInfo.add(new Label("Contact"), 1, 0);
-			initialInfo.add(new Label(supplier.getName()), 0, 1);
+			initialInfo.add(new Label("Name:"), 0, 0);
+			initialInfo.add(new Label("Contact:"), 0, 1);
+			initialInfo.add(new Label(supplier.getName()), 1, 0);
 			initialInfo.add(new Label(supplier.getPhoneNumber()), 1, 1);
-			Button copyBtn = new Button("Copy contact",
+			Button copyBtn = new Button("",
 					ImageGetter.getImage("Resources/buttons/clipboardCopy.png", 20, 20));
 			copyBtn.setOnAction(E->{
 				Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -278,12 +282,15 @@ public class SuppliersView extends BorderPane {
 		        clipboard.setContent(content);
 		        new Alert(AlertType.CONFIRMATION, "Copied on clipboard.").showAndWait();
 			});
-			initialInfo.add(copyBtn, 1, 2);
+			
+			initialInfo.add(copyBtn, 2, 1);
 			itemsOffered = new ListView<>
 			(FXCollections.observableArrayList(supplier.getOfferedItems()));
-			setMargin(itemsOffered, new Insets(20, 0, 50, 0));
-			HBox titleDiv = new HBox(new Label("Items Offered"));
-			titleDiv.setAlignment(Pos.CENTER);
+			setMargin(itemsOffered, new Insets(0, 0, 50, 0));
+			Label label = new Label("Items Offered");
+			label.setId("title");
+			HBox titleDiv = new HBox(label);
+			titleDiv.setAlignment(Pos.BOTTOM_CENTER);
 			getChildren().addAll(initialInfo, titleDiv,itemsOffered);
 		}
 	}

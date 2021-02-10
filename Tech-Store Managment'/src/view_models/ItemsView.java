@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
@@ -18,12 +19,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.Bill;
 import models.BillItem;
+import views.CashierView;
 
 //Shows all items that cashier add [Left side of the cashier view]
 public class ItemsView extends BorderPane {
@@ -47,8 +46,8 @@ public class ItemsView extends BorderPane {
 	}
 	
 	private void addTitle() {
-		Text title = new Text("Items");
-		title.setFont(Font.font("default", FontWeight.BOLD, 30));
+		Label title = new Label("Items");
+		title.setId("title");
 		setTop(title);
 		setMargin(title, new Insets(0, 0, 10, 0));
 		setAlignment(title, Pos.CENTER);
@@ -77,27 +76,10 @@ public class ItemsView extends BorderPane {
 		table.getColumns().add(column);
 	}
 	
-	public void addItem(String itemName, double price, int quantity) {
-		boolean contains = false;
-		for(BillItem item : items) {
-			System.out.println(item.getItemName());
-			if(item.getItemName().equals(itemName)) {
-				System.out.println(item.getItemName() + " " + itemName);
-				item.setQuantity(item.getQuantity() + quantity);
-				contains = true;
-			}
-			if(!contains) {
-				System.out.println("Doesn't contin");
-				BillItem b = new BillItem(itemName, price, quantity);
-				items.add(b);
-				bill.addBillItem(b);
-			}
-		}
-	}
-	
 	public void editSelected(String name, int quantity) throws ViewException{
 		if( selectedRow < items.size()) {
 			BillItem b = StockController.getItem(name, quantity, items.get(selectedRow).getQuantity());
+			addItemView.changeTotalPrice(-1*items.get(selectedRow).getQuantity()*b.getsellingPrice());
 			items.set(selectedRow, b);
 			bill.editItem(selectedRow, b);
 			addItemView.changeTotalPrice(b.getQuantity() * b.getsellingPrice());
@@ -115,9 +97,9 @@ public class ItemsView extends BorderPane {
 		Button edit = new Button("Edit");
 		edit.setOnAction((event) -> {
 			BillItem i = table.getSelectionModel().getSelectedItem();
-			
 			new EditItemPopUp(i.getItemName(), i.getQuantity(), this).start(new Stage());
-		});
+			deselect();
+			});
 		Button delete = new Button("Delete");
 		delete.setOnAction(e->{
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to delete the selected item from the bill?",
@@ -129,6 +111,8 @@ public class ItemsView extends BorderPane {
 				StockController.purchaseStock(StockController.getItem(i.getItemName()), i.getQuantity());
 				items.remove(i);
 				deselect();
+				if(isEmpty())
+					CashierView.setEmpty(true);
 			}
 		});
 		bottom.getChildren().addAll(deselect, edit, delete);
@@ -164,6 +148,7 @@ public class ItemsView extends BorderPane {
 			items.add(b);
 			bill.addBillItem(b);
 		}
+		CashierView.setEmpty(false);
 	}
 	
 	public Bill getBill() {

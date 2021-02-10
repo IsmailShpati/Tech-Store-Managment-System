@@ -39,6 +39,7 @@ public class BillsView extends BorderPane{
 	}
 
 	private void initPickers() {
+		VBox pickerContainer = new VBox(20);
 		GridPane picker = new GridPane();
 		
 		if(cashier.getBills().size() > 0) {
@@ -58,13 +59,16 @@ public class BillsView extends BorderPane{
 		to.setOnAction(e->{
 			initScrollPane();
 		});
-		picker.setVgap(20); picker.setHgap(15);
-		picker.add(from, 2, 1);
-		picker.add(new Label("From "), 1, 1);
-		picker.add(to,  2, 2);
-		picker.add(new Label("To "), 1, 2);
-		picker.add(totalBills, 1, 3);
-		setLeft(picker);
+		picker.setVgap(20); 
+		picker.setHgap(15);
+		picker.add(from, 1, 0);
+		picker.add(new Label("From: "), 0, 0);
+		picker.add(to,  1, 1);
+		picker.add(new Label("To: "), 0, 1);
+		//picker.add(totalBills, 1, 3);
+		pickerContainer.getChildren().addAll(picker, totalBills);
+		pickerContainer.setPadding(new Insets(30));
+		setLeft(pickerContainer);
 		setMargin(picker, new Insets(30));
 	}
 	

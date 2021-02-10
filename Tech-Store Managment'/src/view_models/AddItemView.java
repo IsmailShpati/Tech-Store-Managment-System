@@ -80,11 +80,14 @@ public class AddItemView extends BorderPane{
 	}
 	
 	private void initAddBtn() {
-		Button addItemBtn = new Button("NEW ITEM");
+		Button addItemBtn = new Button("NEW ITEM",
+				ImageGetter.getImage("Resources/buttons/add.png", 20, 20));
 		addItemBtn.setOnAction(event -> {
 			try {
 				addItem();
 				reset();
+				((StockAdmin)mainView).refresh();
+				
 				new Alert( AlertType.CONFIRMATION, "Added succesfully").show();
 			}catch(ViewException e) {
 				e.showAlert();
@@ -118,7 +121,9 @@ public class AddItemView extends BorderPane{
 	}
 	
 	private void initBackBtn() {
-		Button backBtn = new Button("Back");
+		Button backBtn = new Button("Back",
+				ImageGetter.getImage("Resources/buttons/back.png", 20, 20));
+
 		setBottom(backBtn);
 		BorderPane.setAlignment(backBtn, Pos.CENTER_LEFT);
 		BorderPane.setMargin(backBtn, new Insets(30));

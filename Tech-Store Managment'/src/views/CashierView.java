@@ -23,10 +23,10 @@ import view_models.SideMenu;
 
 public class CashierView  implements Viewable{
 	private Cashier cashier;
-	
 	public CashierView(Cashier cashier) {
 		this.cashier = cashier;
 	}
+	private static boolean empty = true;
 	
 	@Override
 	public void setView(Stage stage) {
@@ -54,7 +54,15 @@ public class CashierView  implements Viewable{
 
 	}
 	
-	class CashierPannel extends BorderPane{
+	public static boolean isEmpty() {
+		return empty;
+	}
+	
+	public static void setEmpty(boolean isEmpty) {
+		empty = isEmpty;
+	}
+	
+	public class CashierPannel extends BorderPane{
 		private ItemsView leftSide = new ItemsView();
 		private AddItem rightSide = new AddItem(leftSide);
 	    private SideMenu menu ;
@@ -92,6 +100,7 @@ public class CashierView  implements Viewable{
 					rightSide.resetTotalPrice();
 					new Alert(AlertType.CONFIRMATION, 
 							"Bill printed", ButtonType.OK).showAndWait();	
+					empty = true;
 				}
 				else 
 					new Alert(AlertType.WARNING, 

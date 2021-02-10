@@ -23,7 +23,7 @@ public class UsersView extends TableView<User> {
 	
 	public UsersView() {
 		setItems(users);
-		setMinWidth(700);
+		setMinWidth(950);
 		initColumns();
 	}
 	
@@ -107,6 +107,7 @@ public class UsersView extends TableView<User> {
 		birthdayColumn.setCellValueFactory(new PropertyValueFactory<>("birthday"));
 		getColumns().addAll(levelColumn, usernameColumn, passwordColumn, nameColumn,
 				surnameColumn, salaryColumn, phoneColumn, birthdayColumn);
+		//setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
 	
 	public void refresh() {

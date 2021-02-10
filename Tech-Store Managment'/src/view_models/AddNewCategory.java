@@ -22,7 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 public class AddNewCategory extends BorderPane{
@@ -154,6 +153,7 @@ public class AddNewCategory extends BorderPane{
 			Optional<ButtonType> butons = alert.showAndWait();
 			if(butons.get() == ButtonType.YES)
 				CategorieController.deleteCategory(s);
+			
 			refresh();
 		}
 	}

@@ -18,20 +18,22 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import models.PurchaseBill;
 import models.Manager;
 
 public class ManagerStatistic extends BorderPane{
 	
-	private VBox selections = new VBox(15);
+	private GridPane selections = new GridPane();
 	private BarChart<String, Integer> chart;
 	private BarChart<String, Double> moneyChart;
 	private DatePicker fromDate, toDate;
+	private Label totalLabel;
 	
 	public ManagerStatistic() {
 		setPadding(new Insets(30));
+		totalLabel = new Label();
 		initQuantityChart();
 		initMoneyChart();
 		setTotalMoneySpent(LocalDate.now(), LocalDate.now());
@@ -66,26 +68,24 @@ public class ManagerStatistic extends BorderPane{
 	
 	
 	private void initGrid() {
+		VBox container = new VBox(15);
+		container.setAlignment(Pos.CENTER);
+		selections.setVgap(15);
+		selections.setHgap(10);
 		ComboBox<String> typeSelector = new ComboBox<>();
 		typeSelector.getItems().addAll("Money spent", "Items purchased");
 		typeSelector.setValue("Money spent");
 		ComboBox<String> managerSelector = new ComboBox<>();
 		managerSelector.getItems().add("All");
+		managerSelector.setPrefWidth(170);
 		managerSelector.setValue("All");
 		for(Manager c : UserController.getManagers())
 			managerSelector.getItems().add(c.toString());
 		selections.setAlignment(Pos.CENTER);
-		HBox firstRow = new HBox(10);
-		firstRow.getChildren().addAll(new Label("Manager/s: "), managerSelector);
 		
-		HBox container = new HBox(10);
 		
 		fromDate = new DatePicker(LocalDate.now());
-		container.getChildren().addAll(new Label("From"), fromDate);
 		toDate = new DatePicker(LocalDate.now());
-		HBox secondCont = new HBox(25);
-		secondCont.getChildren().addAll(new Label("To"), toDate);
-		
 		typeSelector.setOnAction(e->{
 			handleChange(managerSelector, typeSelector);
 		});
@@ -98,10 +98,16 @@ public class ManagerStatistic extends BorderPane{
 		toDate.setOnAction(e->{
 			handleChange(managerSelector, typeSelector);
 		});
-		
-		selections.getChildren().addAll(typeSelector, firstRow, container, secondCont);
+		 selections.add(typeSelector, 1, 0);
+		 selections.add(new Label("Manager/s:"), 0, 1);
+		 selections.add(managerSelector, 1, 1);
+		 selections.add(new Label("From:"), 0, 2);
+		 selections.add(fromDate, 1, 2);
+		 selections.add(new Label("To:"), 0, 3);
+		 selections.add(toDate, 1, 3);
 		 setMargin(selections, new Insets(0, 30, 0, 0));
-		 setLeft(selections);
+		 container.getChildren().addAll(selections, totalLabel);
+		 setLeft(container);
 	
 	}
 
@@ -127,9 +133,12 @@ public class ManagerStatistic extends BorderPane{
 	}
 	
 	private void setTotalMoneySpent(LocalDate from, LocalDate to) {
+		double total = 0;
 		for(Manager m : UserController.getManagers()) {
 			setTotalMoneySpent(from, to, m);
+			total += m.getTotal(from, to);
 		}
+		totalLabel.setText("Total money spent: " + total);
 		
 	}
 	
@@ -137,13 +146,14 @@ public class ManagerStatistic extends BorderPane{
 		Series<String, Double> seris = new Series<>();
 		seris.getData().add(new Data<>(m.getName(), m.getTotal(from, to)));
 		moneyChart.getData().add(seris);
-		
+		totalLabel.setText("");
 	}
 	
 	private void setTotalData(LocalDate from, LocalDate to) {
 	
 		for(Manager m : UserController.getManagers())
 			setManagerData(from, to, m);
+		totalLabel.setText("");
 	}
 
 	private void setManagerData(LocalDate from, LocalDate to, Manager m) {
@@ -154,6 +164,7 @@ public class ManagerStatistic extends BorderPane{
 			series.getData().add(new Data<>(i.getItemName(), i.getQuantity()));
 			chart.getData().add(series);
 		}
+		totalLabel.setText("");
 	}
 
 	

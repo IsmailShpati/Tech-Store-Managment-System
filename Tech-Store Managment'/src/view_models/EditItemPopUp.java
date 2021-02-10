@@ -49,8 +49,10 @@ public class EditItemPopUp extends Application {
 	    
 	    save.setOnAction(e -> {
 	    	try {
-				itemView.editSelected(nameField.getText(), Integer.parseInt(quantityField.getText()));
-			} catch (NumberFormatException e1) {
+	    		if(quantityField.getText().equals("0"))
+	    			throw new ViewException("Quantity can't be 0",AlertType.ERROR);
+				itemView.editSelected(nameField.getText(), Integer.parseInt(quantityField.getText()));	
+	    	} catch (NumberFormatException e1) {
 				ViewException.showAlert("Please enter a number", AlertType.ERROR);
 			}
 	    	catch(ViewException e1) {
@@ -62,8 +64,8 @@ public class EditItemPopUp extends Application {
 	    stage.setScene(new Scene(root));
 	    stage.initStyle(StageStyle.UTILITY);
 	    stage.setTitle("Edit item entry");
-	    stage.show();
-	    stage.setAlwaysOnTop(true);
+	    stage.showAndWait();
+	    
 		
 	}
 

@@ -2,6 +2,7 @@ package view_models;
 
 import java.time.LocalDate;
 
+
 import controllers.UserController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,10 +22,12 @@ public class AdminStatistics extends BorderPane {
 
 	private PieChart chart = new PieChart();
 	private VBox selectors = new VBox(15);
+	private Label totalMoney;
 	
 	public AdminStatistics() {
 		setPadding(new Insets(30));
 		setRight(chart);
+		totalMoney = new Label();
 		initSelectors();
 	}
 	
@@ -51,6 +54,10 @@ public class AdminStatistics extends BorderPane {
 	}
 	
 	private void initSelectors() {
+		Label title = new Label("Income");
+		title.setId("title");
+		setAlignment(title, Pos.CENTER);
+		setTop(title);
 		DatePicker from = new DatePicker();
 		from.setValue(LocalDate.now());
 		DatePicker to = new DatePicker();
@@ -69,7 +76,7 @@ public class AdminStatistics extends BorderPane {
 		cont2.getChildren().addAll(new Label("To :"), to);
 		initPie(from.getValue(), to.getValue());
 		selectors.setAlignment(Pos.CENTER);
-		selectors.getChildren().addAll(cont1, cont2);
+		selectors.getChildren().addAll(cont1, cont2, totalMoney);
 		setLeft(selectors);
 	}
 	
@@ -84,6 +91,7 @@ public class AdminStatistics extends BorderPane {
 				String.format("%.2f",salaryExpenses),salaryExpenses);
 		PieChart.Data expensesP = new PieChart.Data("Purchases Expenses\n"+
 				String.format("%.2f",purchaseExpenses), purchaseExpenses);
+		totalMoney.setText("Total profit: " + (revenueP-salaryExpenses-purchaseExpenses));
 		chart.getData().addAll(revenue, expenses, expensesP);
 	}
 	

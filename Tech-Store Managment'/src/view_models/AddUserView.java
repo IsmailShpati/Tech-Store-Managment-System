@@ -83,7 +83,8 @@ public class AddUserView extends BorderPane {
 		
 		body.add(new Label("Surname: "), startingColumn, startingRow);
 		body.add(fields[2], startingColumn+1, startingRow++);
-		
+		Tooltip phoneTooltip = new Tooltip("Enter a valid Albanian number\n ex. \"+355 followed by 9 digits");
+		fields[4].setTooltip(phoneTooltip);
 		body.add(new Label("Phone number: "), startingColumn, startingRow);
 		body.add(fields[4], startingColumn+1, startingRow++);
 		
@@ -127,6 +128,8 @@ public class AddUserView extends BorderPane {
 			throw new ViewException("Please enter a surname", AlertType.ERROR);
 		if(phoneNumber.length() < 1)
 			throw new ViewException("Please enter a phone number", AlertType.ERROR);
+		if(!phoneNumber.matches("^(\\+355){1}\\d{9,}$"))
+			throw new ViewException("Please enter a valid phone number", AlertType.ERROR);
 		
 		salary = ((NumberField)fields[3]).getValue();
 		if(salary < 0)
@@ -152,7 +155,7 @@ public class AddUserView extends BorderPane {
 		if(pass.length() < 8)
 			throw new ViewException("Password must be at least 8 characters long",
 					AlertType.ERROR);
-		if(!pass.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!_%^])$"))
+		if(!pass.matches("^^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#?!_%^])[a-zA-Z1-9#?!_%^]{8,}"))
 			throw new ViewException("Password must contian at least 1 digit, 1 upper case, "
 	+ "1 lower case and 1 of the following #?!_%^",
 					AlertType.ERROR);

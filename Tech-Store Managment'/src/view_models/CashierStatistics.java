@@ -18,7 +18,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import models.Bill;
 import models.BillItem;
@@ -26,11 +26,14 @@ import models.Cashier;
 
 public class CashierStatistics extends BorderPane {
 
-	private VBox selections = new VBox(15);
+	private GridPane selections = new GridPane();
 	private BarChart<String, Integer> chart;
 	private BarChart<String, Double> moneyChart;
 	private DatePicker fromDate, toDate;
+	private Label totalLabel;
+	
 	public CashierStatistics() {
+		totalLabel = new Label();
 		setPadding(new Insets(30));
 		initQuantityChart();
 		initMoneyChart();
@@ -64,25 +67,23 @@ public class CashierStatistics extends BorderPane {
 	}
 	
 	private void initGrid() {
+		VBox container = new VBox(15);
+		container.setAlignment(Pos.CENTER);
+		selections.setVgap(15);
+		selections.setHgap(10);
 		ComboBox<String> typeSelector = new ComboBox<>();
 		typeSelector.getItems().addAll("Revenue generated", "Bills printed", "Items sold");
 		typeSelector.setValue("Revenue generated");
 		ComboBox<String> cashierSelector = new ComboBox<>();
+		cashierSelector.setPrefWidth(190);
 		cashierSelector.getItems().add("All");
 		cashierSelector.setValue("All");
 		for(Cashier c : UserController.getCashiers())
 			cashierSelector.getItems().add(c.toString());
 		selections.setAlignment(Pos.CENTER);
-		HBox firstRow = new HBox(10);
-		firstRow.getChildren().addAll(new Label("Cashier/s: "), cashierSelector);
-		
-		HBox container = new HBox(10);
-		
 		fromDate = new DatePicker(LocalDate.now());
-		container.getChildren().addAll(new Label("From"), fromDate);
+		
 		toDate = new DatePicker(LocalDate.now());
-		HBox secondCont = new HBox(25);
-		secondCont.getChildren().addAll(new Label("To"), toDate);
 		
 		typeSelector.setOnAction(e->{
 			handleChange(cashierSelector, typeSelector);
@@ -98,10 +99,16 @@ public class CashierStatistics extends BorderPane {
 		});
 		
 	
-	
-	 selections.getChildren().addAll(typeSelector, firstRow, container, secondCont);
+	 selections.add(typeSelector, 1, 0);
+	 selections.add(new Label("Cashier/s:"), 0, 1);
+	 selections.add(cashierSelector, 1, 1);
+	 selections.add(new Label("From:"), 0, 2);
+	 selections.add(fromDate, 1, 2);
+	 selections.add(new Label("To:"), 0, 3);
+	 selections.add(toDate, 1, 3);
 	 setMargin(selections, new Insets(0, 30, 0, 0));
-	 setLeft(selections);
+	 container.getChildren().addAll(selections, totalLabel);
+	 setLeft(container);
 	}
 	
 	private void handleChange(ComboBox<String> cashierSelector, ComboBox<String> typeSelector) {
@@ -177,6 +184,7 @@ public class CashierStatistics extends BorderPane {
 			series.getData().add(new Data<>(i.getItemName(), i.getQuantity()));
 			chart.getData().add(series);
 		}
+		totalLabel.setText("");
 	}
 	
 	private void setCashierData(LocalDate from, LocalDate to, Cashier c) {
@@ -191,32 +199,38 @@ public class CashierStatistics extends BorderPane {
 			series.getData().add(new Data<>(i.getItemName(), i.getQuantity()));
 			chart.getData().add(series);
 		}
+		totalLabel.setText("");
 	}
 	
 	private void setTotalBillsData(LocalDate from, LocalDate to) {
 		
 		for(Cashier c : UserController.getCashiers()) {
 			setTotalBillsDate(from, to, c);
- 		}
+		}
+		totalLabel.setText("");
 	}
 	
 	private void setTotalBillsDate(LocalDate from, LocalDate to, Cashier c) {
 		Series<String, Integer> seris = new Series<>();
 		seris.getData().add(new Data<>(c.getName(), c.getNrBillsInPeriod(from, to)));
 		chart.getData().add(seris);
+		totalLabel.setText("");
 	}
 	
 	private void setTotalMoneyMade(LocalDate from, LocalDate to) {
-
+		double total = 0;
 		for(Cashier c : UserController.getCashiers()) {
 			setTotalMoneyMade(from, to, c);
+			total += c.getTotal(from, to);
 		}
+		totalLabel.setText("Total money made: " + total);
 	}
 	
 	private void setTotalMoneyMade(LocalDate from, LocalDate to, Cashier c) {
 		Series<String, Double> seris = new Series<>();
 		seris.getData().add(new Data<>(c.getName(), c.getTotal(from, to)));
 		moneyChart.getData().add(seris);
+		totalLabel.setText("");
 	}
 
 	private static ArrayList<BillItem> removeDuplicates(ArrayList<BillItem> items){

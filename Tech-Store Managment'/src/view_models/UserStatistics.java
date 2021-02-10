@@ -1,6 +1,7 @@
-package view_models;
+ package view_models;
 
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -14,6 +15,8 @@ public class UserStatistics extends BorderPane {
 	private MenuBar menu;
 	
 	public UserStatistics() {
+		title.setId("title");
+		setMargin(title, new Insets(20));
 		setTop(title);
 		setAlignment(title, Pos.CENTER);
 		initMenu();

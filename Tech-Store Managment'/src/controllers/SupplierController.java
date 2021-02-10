@@ -27,9 +27,7 @@ public class SupplierController {
 			in.close();
 		}  catch (Exception e) {
 			System.err.println("[SupplierController]File empty\n" + e.getMessage());
-			
 		}
-		
 	}
 	
 	public static ArrayList<Supplier> getSuppliers(){
@@ -56,7 +54,6 @@ public class SupplierController {
 		return null;
 	}
 	
-	
 	private static void save() {
 		try {
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(path));
@@ -66,5 +63,4 @@ public class SupplierController {
 			e.printStackTrace();
 		}
 	}
-	
 }

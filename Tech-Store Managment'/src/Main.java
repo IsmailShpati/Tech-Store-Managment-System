@@ -11,7 +11,7 @@ public class Main extends Application {
 		new LogIn().setView(stage);
 		stage.show();
 		stage.getIcons().add(new Image
-				("Resources/tech-icon.png"));
+				("Resources/storeIcon.png"));
 	}
 
 }

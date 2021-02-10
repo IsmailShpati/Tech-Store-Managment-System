@@ -14,13 +14,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import models.Administrator;
 import models.Cashier;
@@ -47,14 +44,11 @@ public class LogIn implements Viewable {
 		private GridPane body = new GridPane();
 		private User user;
 		private Stage stage;
-		private String imagePath = "Resources/tech-store.jpeg";
+		private String imagePath = "Resources/storeIcon.png";
 		
 		public LogInView(Stage stage) {
-			BackgroundImage myBI= new BackgroundImage(new Image("Resources/21.jpg",200,600,false,true),
-			        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-			          BackgroundSize.DEFAULT);
-			setBackground(new Background(myBI));
 			this.stage = stage;
+			setStyle("-fx-background-color: #75c9be;");
 			initBody();
 			setCenter(body);
 			body.setAlignment(Pos.CENTER);
@@ -71,7 +65,9 @@ public class LogIn implements Viewable {
 			body.setHgap(20);
 			body.setVgap(10);
 			Label usernameLabel = new Label("Username:");
+			usernameLabel.setFont(Font.font("", FontWeight.BOLD, 18));
 			Label passwordLabel = new Label("Password:");
+			passwordLabel.setFont(Font.font("", FontWeight.BOLD, 18));
 			body.add(usernameLabel, 0, 0);
 			body.add(passwordLabel, 0, 1);
 			passwordField.setOnKeyPressed(e->{
@@ -83,6 +79,7 @@ public class LogIn implements Viewable {
 			Button button = new Button("Log in", ImageGetter.
 					getImage("Resources/buttons/login.png", 26, 26));
 			body.add(button, 1, 2);
+			button.setFont(Font.font(16));
 			button.setOnAction(E -> {
 				logIn();
 			});

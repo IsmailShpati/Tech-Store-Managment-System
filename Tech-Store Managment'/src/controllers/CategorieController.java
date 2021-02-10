@@ -44,11 +44,13 @@ public class CategorieController {
 	
 	public static void deleteCategory(String category) {
 		categories.remove(category);
+		save();
 	}
 	
 	public static void editCategory(int index, String newCategory) throws ViewException{
 		exists(newCategory);
 		categories.set(index, newCategory);
+		save();
 	}
 	
 	private static void exists(String category) throws ViewException{

@@ -22,8 +22,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import models.PermissionLevel;
 import models.User;
 import views.LogIn;
+import views.CashierView;
 
 public class SideMenu extends HBox {
 	private SidePannel sideMenu;
@@ -46,10 +48,7 @@ public class SideMenu extends HBox {
 		getChildren().add(rightSide);
 		stage.sizeToScene();
 	}
-	
-	public void addButton(Pane pane, String btnText) {
-		sideMenu.addButton(pane, btnText);
-	}
+
 	public void addButton(Pane pane, String btnText, ImageView imageView) {
 		sideMenu.addButton(pane, btnText, imageView);
 	}
@@ -78,19 +77,22 @@ public class SideMenu extends HBox {
 			setMargin(logOut, new Insets(70, 0, 10, 0));
 			setCenter(body);
 			logOut.setOnAction(e->{
-				System.out.println("LogginOut");	
-				Alert alert = new Alert(AlertType.CONFIRMATION, "Wanna log out?", ButtonType.YES, ButtonType.NO);
+				System.out.println("LogginOut");
+				if(user.getPermission() == PermissionLevel.CASHIER) {
+					if(!CashierView.isEmpty()) {
+						new Alert(AlertType.ERROR,
+								"There are items alredy added to the bill. Choose what you will do with them.").showAndWait();
+						return;
+					}
+				}
+				Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to log out?", ButtonType.YES, ButtonType.NO);
 				Optional<ButtonType> butons = alert.showAndWait();
-				if(butons.get() == ButtonType.YES)
-					new LogIn().setView(stage);
+					if(butons.get() == ButtonType.YES) 
+						new LogIn().setView(stage);
+				
 			});
 		}
-		
-		public void addButton(Pane pane, String btnText) {
-			Button btn = new Button(btnText);
-			initButton(btn, pane);
-		}
-		
+
 		public void addButton(Pane pane, String btnText, ImageView graphic) {
 			Button btn = new Button(btnText,graphic);
 			initButton(btn, pane);

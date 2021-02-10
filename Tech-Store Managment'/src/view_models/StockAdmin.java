@@ -17,6 +17,10 @@ public class StockAdmin extends BorderPane implements Returnable {
 		setCenter(stockView.getStockView());
 		setBottom(menuBar);
 	}
+	public void refresh() {
+		stockView.refresh();
+	}
+	
 	private void initMenusForAdmin() {
 		Label deleteLabel = new Label("Delete",
 				ImageGetter.getImage("Resources/buttons/delete_white.png",20, 20));
